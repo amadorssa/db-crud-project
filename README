@@ -25,6 +25,7 @@ cd db-crud-project
    python -m venv env
    source env/bin/activate  # En macOS/Linux
    .\env\Scripts\activate  # En Windows
+   cd app/
    pip install -r requirements.txt
    ```
 
@@ -36,12 +37,20 @@ cd db-crud-project
    SECRET_KEY=supersecretkey
    ```
 
-4. Inicia el servidor de desarrollo:
+4. Conectar a la base de datos:
+   - Asegúrate de que la base de datos esté en funcionamiento y accesible.
    ```bash
-   cd app/
+   brew services start postgresql
+   psql postgres
+   CREATE ROLE postgres WITH LOGIN SUPERUSER PASSWORD 'postgres';
+   CREATE DATABASE internships_db;
+   ```
+
+5. Inicia el servidor de desarrollo:
+   ```bash
    uvicorn main:app --reload
    ```
 
-5. Accede a la API en:
+6. Accede a la API en:
    - Swagger UI: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
    - ReDoc: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
