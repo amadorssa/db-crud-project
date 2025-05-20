@@ -5,13 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Practicas</title>
-    <base href="/static/">
     <link rel="stylesheet" href="/static/styles.css">
     <script type="module" src="/static/api.js"></script>
     <script type="module" src="/static/routes.js"></script>
-    <script type="module" src="/static/user/user.js"></script>
+    <script type="module" src="/static/src/features/user/User.js"></script>
 </head>
 <body>
+    <nav>
+        <div class="nav-container">
+          <a href="#" class="logo">Bases de datos</a>
+          <ul>
+            <li><a href="#">Usuarios</a></li>
+            <li><a href="#">Unidades</a></li>
+            <li><a href="#">Internados</a></li>
+            <li><a href="#">Reportes</a></li>
+            <li><a href="#">Documentos</a></li>
+          </ul>
+        </div>
+      </nav>
+
     <div class="container">
         <h1>Usuarios</h1>
         
@@ -79,7 +91,6 @@
                             <th>Email</th>
                             <th>Es Admin</th>
                             <th>Activo</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">

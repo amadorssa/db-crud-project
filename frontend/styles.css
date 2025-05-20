@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 20px;
     color: #333;
+    font-size: small;
 }
 
 h1, h2, h3 {
@@ -42,10 +43,11 @@ input, select {
 }
 
 button {
-    background-color: #3498db;
+    background-color: #3147d8;
     color: white;
     border: none;
     padding: 10px 15px;
+    margin-top: 10px;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -62,6 +64,7 @@ table {
 
 table, th, td {
     border: 1px solid #ddd;
+    font-size: 0.875rem;
 }
 
 th, td {
@@ -109,3 +112,58 @@ tr:nth-child(even) {
     margin-bottom: 15px;
     display: none;
 }
+
+/* __________ */
+/* styles.css */
+
+/* Navegación */
+nav {
+    background-color: #cddb34;
+    padding: 1rem 0 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  nav .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  nav .logo {
+    color: #211f1f;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  nav ul li {
+    margin-left: 1rem;
+  }
+  
+  nav ul li a {
+    color: #211f1f;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  body {
+    padding-top: 4.5rem; /* igual o un poco más que la altura de la nav */
+  }
+  

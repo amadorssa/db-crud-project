@@ -41,7 +41,7 @@ app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.get("/user", response_class=HTMLResponse)
 def serve_user_page():
-    return FileResponse("frontend/user/user.html")
+    return FileResponse("frontend/src/features/user/UserPage.html")
 
 # ---------- API ----------
 app.include_router(user_router, tags=["users"])

@@ -1,4 +1,3 @@
-# app/features/user.py
 from fastapi import APIRouter, Depends, HTTPException, status
 from psycopg2 import IntegrityError
 from psycopg2.extras import RealDictCursor

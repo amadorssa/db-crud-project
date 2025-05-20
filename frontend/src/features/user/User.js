@@ -1,15 +1,23 @@
 // frontend/user/user.py
-import { api, API_ENDPOINTS } from '../api.js';
+import { api, API_ENDPOINTS } from '../../../api.js';
 
-const successEl = document.getElementById('successMessage');
-const errorEl   = document.getElementById('errorMessage');
-function showSuccess(msg) {
-  successEl.textContent = msg;
-  errorEl.textContent = '';
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+
+function showMessage(element, message, duration = 5000) {
+    element.textContent = message;
+    element.style.display = 'block';
+    setTimeout(() => {
+        element.style.display = 'none';
+    }, duration);
 }
-function showError(msg) {
-  errorEl.textContent = msg;
-  successEl.textContent = '';
+
+function showError(message) {
+    showMessage(errorMessage, message);
+}
+
+function showSuccess(message) {
+    showMessage(successMessage, message);
 }
 
 // ==============================
@@ -30,12 +38,12 @@ document.getElementById('createUserForm')
       es_activo:     form.es_activo.value === 'true',
     };
     try {
-      const response = await api.post(API_ENDPOINTS.USERS.CREATE, payload);
-      showSuccess(`Usuario creado con ID ${response.data.usuario_id}`);
+      await api.post(API_ENDPOINTS.USERS.CREATE, payload);
+      showSuccess(`Usuario creado`);
       form.reset();
       loadUsers();
     } catch (error) {
-      showError(error.response?.data?.detail || error.message || 'Error creando usuario');
+      showError(error.response?.detail || error.message || 'Error creando usuario');
     }
   });
 
@@ -56,10 +64,6 @@ async function loadUsers() {
         <td>${user.email}</td>
         <td>${user.es_admin}</td>
         <td>${user.es_activo}</td>
-        <td>
-          <button data-id="${user.usuario_id}" class="btn-detail">Detalles</button>
-          <button data-id="${user.usuario_id}" class="btn-load">Cargar</button>
-        </td>
       `;
       tbody.appendChild(tr);
     });
@@ -86,7 +90,7 @@ document.getElementById('getUserDetails')
       `;
       showSuccess('Detalles cargados');
     } catch (error) {
-      showError(error.response?.data?.detail || 'Usuario no encontrado');
+      showError(error.response?.detail || 'Usuario no encontrado');
     }
   });
 
@@ -136,7 +140,7 @@ document.getElementById('updateUserForm')
       showSuccess('Usuario actualizado');
       loadUsers();
     } catch (error) {
-      showError(error.response?.data?.detail || 'Error actualizando');
+      showError(error.response?.detail || 'Error actualizando');
     }
   });
 
