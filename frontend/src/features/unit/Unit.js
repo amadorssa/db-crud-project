@@ -21,7 +21,7 @@ function showSuccess(message) {
 }
 
 // ==============================
-// 1) Crear usuario
+// 1) Crear Unidad
 // ==============================
 document.getElementById('createUnitForm')
   .addEventListener('submit', async e => {
@@ -34,7 +34,7 @@ document.getElementById('createUnitForm')
       direccion: form.direccion.value || null,
       ciudad:         form.ciudad.value || null,
       estado:    form.estado.value || null,
-	capacidad:      form.capacidad.value ? parseInt(form.capacidad.value) : null,
+      capacidad:      form.capacidad.value ? parseInt(form.capacidad.value) : null,
       nombre_contacto:     form.nombre_contacto.value,
       email_contacto: form.email_contacto.value,
       telefono_contacto: form.telefono_contacto.value,
@@ -45,104 +45,105 @@ document.getElementById('createUnitForm')
       await api.post(API_ENDPOINTS.UNITS.CREATE, payload);
       showSuccess(`Unidad creada`);
       form.reset();
-      loadUsers();
+      loadUnits();
     } catch (error) {
       showError(error.response?.detail || error.message || 'Error creando unidad');
     }
   });
 
 // ==============================
-// 2) Listar usuarios
+// 2) Listar Unidades
 // ==============================
-async function loadUsers() {
+async function loadUnits() {
   try {
-    const data = await api.get(API_ENDPOINTS.USERS.GET_ALL);
-    const tbody = document.getElementById('usersTableBody');
+    const data = await api.get(API_ENDPOINTS.UNITS.GET_ALL);
+    const tbody = document.getElementById('unitsTableBody');
     tbody.innerHTML = '';
-    data.forEach(user => {
+    data.forEach(unit => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${user.usuario_id}</td>
-        <td>${user.expediente_id}</td>
-        <td>${user.nombre} ${user.primer_apellido} ${user.segundo_apellido || ''}</td>
-        <td>${user.email}</td>
-        <td>${user.es_admin}</td>
-        <td>${user.es_activo}</td>
+        <td>${unit.unidad_id}</td>
+        <td>${unit.admin_id}</td>
+        <td>${unit.tipo_unidad}</td>
+        <td>${unit.nombre_contacto}</td>
+        <td>${unit.es_disponible}</td>
+        <td>${unit.es_activo}</td>
       `;
       tbody.appendChild(tr);
     });
   } catch (error) {
-    showError('No se pudo cargar la lista de usuarios');
+    showError('No se pudo cargar la lista de unidades');
   }
 }
-document.getElementById('refreshList')
-  .addEventListener('click', loadUsers);
+document.getElementById('refreshUnitList')
+  .addEventListener('click', loadUnits);
 //Carga inicial
-loadUsers();
+loadUnits();
 
 // ==============================
 // 3) Ver detalles de un usuario
 // ==============================
-document.getElementById('getUserDetails')
+document.getElementById('getUnitDetails')
   .addEventListener('click', async () => {
-    const id = document.getElementById('userId').value;
+    const id = document.getElementById('unitId').value;
     if (!id) return showError('Ingresa un ID válido');
     try {
-      const data = await api.get(API_ENDPOINTS.USERS.GET(id));
-      document.getElementById('userDetails').innerHTML = `
+      const data = await api.get(API_ENDPOINTS.UNITS.GET(id));
+      document.getElementById('unitDetails').innerHTML = `
         <pre>${JSON.stringify(data, null, 2)}</pre>
       `;
       showSuccess('Detalles cargados');
     } catch (error) {
-      showError(error.response?.detail || 'Usuario no encontrado');
+      showError(error.response?.detail || 'Unidad no encontrada');
     }
   });
 
 // ==============================
 // 4) Cargar datos para actualizar
 // ==============================
-document.getElementById('loadUserForUpdate')
+document.getElementById('loadUnitForUpdate')
   .addEventListener('click', async () => {
-    const id = document.getElementById('updateUserId').value;
+    const id = document.getElementById('updateUnitId').value;
     if (!id) return showError('Ingresa un ID válido');
     try {
-      console.log('Cargando usuario para actualizar', id);
-      const data = await api.get(API_ENDPOINTS.USERS.GET(id));
-      console.log('Datos del usuario', data);
-      document.getElementById('update_expediente_id').value = data.expediente_id;
-      document.getElementById('update_nombre').value        = data.nombre;
-      document.getElementById('update_primer_apellido').value = data.primer_apellido;
-      document.getElementById('update_segundo_apellido').value = data.segundo_apellido || '';
-      document.getElementById('update_email').value         = data.email;
-      document.getElementById('update_contrasena').value    = data.contrasena;
-      document.getElementById('update_es_admin').value      = data.es_admin;
+      console.log('Cargando unidad para actualizar', id);
+      const data = await api.get(API_ENDPOINTS.UNITS.GET(id));
+      console.log('Datos de la unidad', data);
+      document.getElementById('update_admin_id').value = data.admin_id;
+      document.getElementById('update_nombre').value = data.nombre;
+      document.getElementById('update_tipo_unidad').value        = data.tipo_unidad;
+      document.getElementById('update_capacidad').value = data.capacidad || '';
+      document.getElementById('update_nombre_contacto').value = data.nombre_contacto;
+      document.getElementById('update_email_contacto').value         = data.email_contacto || '';
+      document.getElementById('update_telefono_contacto').value    = data.telefono_contacto || '';
+      document.getElementById('update_es_disponible').value     = data.es_disponible;
       document.getElementById('update_es_activo').value     = data.es_activo;
       console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
-      showError(error.response?.detail || 'Usuario no encontrado');
+      showError(error.response?.detail || 'Unidad no encontrada');
     }
   });
 
 // ==============================
-// 5) Actualizar usuario
+// 5) Actualizar unidad
 // ==============================
-document.getElementById('updateUserForm')
+document.getElementById('updateUnitForm')
   .addEventListener('submit', async e => {
     e.preventDefault();
-    const id = document.getElementById('updateUserId').value;
+    const id = document.getElementById('updateUnitId').value;
     const payload = {};
-    ['expediente_id','nombre','primer_apellido','segundo_apellido','email','contrasena']
+      ['admin_id', 'nombre', 'tipo_unidad','capacidad','nombre_contacto','email_contacto','telefono_contacto']
       .forEach(f => {
         const v = document.getElementById(`update_${f}`).value;
-        if (v) payload[f] = f === 'contrasena' && v === '' ? undefined : v;
+        if (v) payload[f] = v === '' ? undefined : v;
       });
-    payload.es_admin  = document.getElementById('update_es_admin').value === 'true';
+    payload.es_disponible  = document.getElementById('update_es_disponible').value === 'true';
     payload.es_activo = document.getElementById('update_es_activo').value === 'true';
     try {
-      await api.put(API_ENDPOINTS.USERS.UPDATE(id), payload);
-      showSuccess('Usuario actualizado');
-      loadUsers();
+      await api.put(API_ENDPOINTS.UNITS.UPDATE(id), payload);
+      showSuccess('Unidad actualizado');
+      loadUnits();
     } catch (error) {
       showError(error.response?.detail || 'Error actualizando');
     }
@@ -151,15 +152,15 @@ document.getElementById('updateUserForm')
 // ==============================
 // 6) Eliminar usuario
 // ==============================
-document.getElementById('deleteUserBtn')
+document.getElementById('deleteUnitBtn')
   .addEventListener('click', async () => {
-    const id = document.getElementById('deleteUserId').value;
+    const id = document.getElementById('deleteUnitId').value;
     if (!id) return showError('Ingresa un ID válido');
-    if (!confirm(`Eliminar usuario ${id}?`)) return;
+    if (!confirm(`Eliminar unidad ${id}?`)) return;
     try {
-      await api.delete(API_ENDPOINTS.USERS.DELETE(id));
-      showSuccess('Usuario eliminado');
-      loadUsers();
+      await api.delete(API_ENDPOINTS.UNITS.DELETE(id));
+      showSuccess('Unidad eliminada');
+      loadUnits();
     } catch (error) {
       showError(error.response?.detail || 'Error eliminando');
     }
