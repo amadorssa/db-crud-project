@@ -48,7 +48,7 @@ cd db-crud-project
 
 5. Inicia el servidor de desarrollo:
    ```bash
-   uvicorn main:app --reload
+   uvicorn app.main:app --reload
    ```
 
 6. Accede a la API en:
