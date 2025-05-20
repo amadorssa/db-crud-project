@@ -10,11 +10,10 @@ unit_router = APIRouter()
 # ------------------- CREATE -------------------
 @unit_router.post("/units/", status_code=status.HTTP_201_CREATED)
 def create_unit(payload: dict, conn=Depends(get_db)):
-    required = ("admin_id", "nombre", "tipo_unidad", "nombre_contacto")
+    required = ("nombre", "tipo_unidad", "nombre_contacto")
     validate_required_fields(payload, required)
 
     unit_data = {
-        "admin_id":    payload["admin_id"],
         "nombre":           payload["nombre"],
         "tipo_unidad":  payload["tipo_unidad"],
         "direccion": payload.get("direccion"),
@@ -25,18 +24,17 @@ def create_unit(payload: dict, conn=Depends(get_db)):
         "email_contacto":   payload.get("email_contacto"),
         "telefono_contacto": payload.get("telefono_contacto"),
         "es_disponible":    payload.get("es_disponible", True),
-        "es_activo":        payload.get("es_activo", True),
     }
 
     query = """
         INSERT INTO unidades (
-            admin_id, nombre, tipo_unidad, direccion, ciudad, estado, capacidad,
+            nombre, tipo_unidad, direccion, ciudad, estado, capacidad,
             nombre_contacto, email_contacto, telefono_contacto,
-            es_disponible, es_activo
+            es_disponible
         ) VALUES (
-            %(admin_id)s, %(nombre)s, %(tipo_unidad)s, %(direccion)s, %(ciudad)s,
+            %(nombre)s, %(tipo_unidad)s, %(direccion)s, %(ciudad)s,
             %(estado)s, %(capacidad)s, %(nombre_contacto)s, %(email_contacto)s,
-            %(telefono_contacto)s, %(es_disponible)s, %(es_activo)s
+            %(telefono_contacto)s, %(es_disponible)s
         );
     """
     try:
@@ -86,13 +84,12 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
     if not payload:
         raise HTTPException(status_code=400, detail="Cuerpo vacío")
 
-    required = ("admin_id", "nombre", "tipo_unidad", "nombre_contacto")
+    required = ("nombre", "tipo_unidad", "nombre_contacto")
     validate_required_fields(payload, required)
     payload["unidad_id"] = unidad_id
 
     query = """
         UPDATE unidades SET
-            admin_id = %(admin_id)s,
             nombre = %(nombre)s,
             tipo_unidad = %(tipo_unidad)s,
             capacidad = %(capacidad)s,
@@ -100,7 +97,6 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             email_contacto = %(email_contacto)s,
             telefono_contacto = %(telefono_contacto)s,
             es_disponible = %(es_disponible)s,
-            es_activo = %(es_activo)s,
             actualizado_el = CURRENT_TIMESTAMP
         WHERE unidad_id = %(unidad_id)s;
     """

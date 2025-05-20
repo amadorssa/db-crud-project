@@ -31,9 +31,8 @@ CREATE_TABLES_SQL = """
 
     CREATE TABLE IF NOT EXISTS unidades (
         unidad_id SERIAL PRIMARY KEY,
-        admin_id INTEGER NOT NULL REFERENCES usuarios(usuario_id),
         nombre VARCHAR(100) UNIQUE NOT NULL,
-        tipo_unidad INTEGER NOT NULL,
+        tipo_unidad VARCHAR(100) NOT NULL,
         direccion VARCHAR(255),
         ciudad VARCHAR(50),
         estado VARCHAR(50),
@@ -42,7 +41,6 @@ CREATE_TABLES_SQL = """
         email_contacto VARCHAR(50),
         telefono_contacto VARCHAR(15),
         es_disponible BOOLEAN NOT NULL DEFAULT TRUE,
-        es_activo BOOLEAN NOT NULL DEFAULT TRUE,
         creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );

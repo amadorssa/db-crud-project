@@ -36,16 +36,12 @@
             <h2>Crear Unidad</h2>
             <form id="createUnitForm">
                 <div class="form-group">
-                    <label for="admin_id">Admin ID *</label>
-                    <input type="text" id="admin_id" name="admin_id" required>
-                </div>
-                <div class="form-group">
                     <label for="nombre">Nombre *</label>
                     <input type="text" id="nombre" name="nombre" required>
                 </div>
                 <div class="form-group">
                     <label for="tipo_unidad">Tipo Unidad *</label>
-                    <input type="number" id="tipo_unidad" name="tipo_unidad" required>
+                    <input type="text" id="tipo_unidad" name="tipo_unidad" required>
                 </div>
 		<div class="form-group">
                     <label for="direccion">Dirección</label>
@@ -82,13 +78,6 @@
                         <option value="true">Sí</option>
                     </select>
                 </div>
-		<div class="form-group">
-                    <label for="es_activo">¿Está Activo?</label>
-                    <select id="es_activo" name="es_activo">
-                        <option value="false">No</option>
-                        <option value="true">Sí</option>
-                    </select>
-                </div>
                 <button type="submit">Crear Unidad</button>
             </form>
         </div>
@@ -102,11 +91,10 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-			    <th>Admin ID</th>
+			    <th>Nombre</th>
                             <th>Tipo Unidad</th>
                             <th>Nombre Contacto</th>
                             <th>Disponible</th>
-			    <th>Activo</th>
                         </tr>
                     </thead>
                     <tbody id="unitsTableBody">
@@ -138,17 +126,13 @@
                 <button id="loadUnitForUpdate">Cargar Datos</button>
             </div>
             <form id="updateUnitForm" style="margin-top: 20px;">
-                <div class="form-group">
-                    <label for="update_admin_id">Admin ID</label>
-                    <input type="text" id="update_admin_id" name="admin_id">
-                </div>
 		<div class="form-group">
                     <label for="update_nombre">Nombre</label>
                     <input type="text" id="update_nombre" name="nombre">
                 </div>
                 <div class="form-group">
                     <label for="update_tipo_unidad">Tipo Unidad</label>
-                    <input type="number" id="update_tipo_unidad" name="tipo_unidad">
+                    <input type="text" id="update_tipo_unidad" name="tipo_unidad">
                 </div>
 		<div class="form-group">
                     <label for="update_capacidad">Capacidad</label>
@@ -169,13 +153,6 @@
 		<div class="form-group">
                     <label for="update_es_disponible">¿Esta Disponible?</label>
                     <select id="update_es_disponible" name="es_disponible">
-                        <option value="false">No</option>
-                        <option value="true">Sí</option>
-                    </select>
-                </div>
-		<div class="form-group">
-                    <label for="update_es_activo">¿Está Activo?</label>
-                    <select id="update_es_activo" name="es_activo">
                         <option value="false">No</option>
                         <option value="true">Sí</option>
                     </select>

@@ -28,18 +28,16 @@ document.getElementById('createUnitForm')
     e.preventDefault();
     const form = e.target;
     const payload = {
-      admin_id: form.admin_id.value,
-      nombre:        form.nombre.value,
-      tipo_unidad: parseInt(form.tipo_unidad.value),
+      nombre: form.nombre.value,
+      tipo_unidad: form.tipo_unidad.value,
       direccion: form.direccion.value || null,
-      ciudad:         form.ciudad.value || null,
-      estado:    form.estado.value || null,
-      capacidad:      form.capacidad.value ? parseInt(form.capacidad.value) : null,
-      nombre_contacto:     form.nombre_contacto.value,
+      ciudad: form.ciudad.value || null,
+      estado: form.estado.value || null,
+      capacidad: form.capacidad.value ? parseInt(form.capacidad.value) : null,
+      nombre_contacto: form.nombre_contacto.value,
       email_contacto: form.email_contacto.value,
       telefono_contacto: form.telefono_contacto.value,
       es_disponible: form.es_disponible.value === 'true',
-      es_activo: form.es_activo.value === 'true',
     };
     try {
       await api.post(API_ENDPOINTS.UNITS.CREATE, payload);
@@ -63,11 +61,10 @@ async function loadUnits() {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${unit.unidad_id}</td>
-        <td>${unit.admin_id}</td>
+        <td>${unit.nombre}</td>
         <td>${unit.tipo_unidad}</td>
         <td>${unit.nombre_contacto}</td>
         <td>${unit.es_disponible}</td>
-        <td>${unit.es_activo}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -109,7 +106,6 @@ document.getElementById('loadUnitForUpdate')
       console.log('Cargando unidad para actualizar', id);
       const data = await api.get(API_ENDPOINTS.UNITS.GET(id));
       console.log('Datos de la unidad', data);
-      document.getElementById('update_admin_id').value = data.admin_id;
       document.getElementById('update_nombre').value = data.nombre;
       document.getElementById('update_tipo_unidad').value        = data.tipo_unidad;
       document.getElementById('update_capacidad').value = data.capacidad || '';
@@ -117,7 +113,6 @@ document.getElementById('loadUnitForUpdate')
       document.getElementById('update_email_contacto').value         = data.email_contacto || '';
       document.getElementById('update_telefono_contacto').value    = data.telefono_contacto || '';
       document.getElementById('update_es_disponible').value     = data.es_disponible;
-      document.getElementById('update_es_activo').value     = data.es_activo;
       console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
@@ -133,13 +128,12 @@ document.getElementById('updateUnitForm')
     e.preventDefault();
     const id = document.getElementById('updateUnitId').value;
     const payload = {};
-      ['admin_id', 'nombre', 'tipo_unidad','capacidad','nombre_contacto','email_contacto','telefono_contacto']
+      ['nombre', 'tipo_unidad','capacidad','nombre_contacto','email_contacto','telefono_contacto']
       .forEach(f => {
         const v = document.getElementById(`update_${f}`).value;
         if (v) payload[f] = v === '' ? undefined : v;
       });
     payload.es_disponible  = document.getElementById('update_es_disponible').value === 'true';
-    payload.es_activo = document.getElementById('update_es_activo').value === 'true';
     try {
       await api.put(API_ENDPOINTS.UNITS.UPDATE(id), payload);
       showSuccess('Unidad actualizado');
