@@ -1,6 +1,7 @@
 # app/features/user.py
 from fastapi import APIRouter, Depends, HTTPException, status
 from psycopg2.extras import RealDictCursor
+from app.utils import validate_required_fields
 
 from app.database import get_db
 
@@ -9,18 +10,8 @@ user_router = APIRouter()
 # ------------------- CREATE -------------------
 @user_router.post("/users/", status_code=status.HTTP_201_CREATED)
 def create_user(payload: dict, conn=Depends(get_db)):
-    required = (
-        "expediente_id",
-        "nombre",
-        "primer_apellido",
-        "email",
-        "contrasena",
-    )
-    missing = [f for f in required if f not in payload or payload[f] is None]
-    if missing:
-        raise HTTPException(
-            status_code=400, detail=f"Campos faltantes: {', '.join(missing)}"
-        )
+    required = ("expediente_id", "nombre", "primer_apellido", "email", "contrasena")
+    validate_required_fields(payload, required)
 
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(
