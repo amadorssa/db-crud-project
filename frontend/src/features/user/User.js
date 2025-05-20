@@ -1,15 +1,23 @@
 // frontend/user/user.py
-import { api, API_ENDPOINTS } from '../api.js';
+import { api, API_ENDPOINTS } from '../../../api.js';
 
-const successEl = document.getElementById('successMessage');
-const errorEl   = document.getElementById('errorMessage');
-function showSuccess(msg) {
-  successEl.textContent = msg;
-  errorEl.textContent = '';
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+
+function showMessage(element, message, duration = 5000) {
+    element.textContent = message;
+    element.style.display = 'block';
+    setTimeout(() => {
+        element.style.display = 'none';
+    }, duration);
 }
-function showError(msg) {
-  errorEl.textContent = msg;
-  successEl.textContent = '';
+
+function showError(message) {
+    showMessage(errorMessage, message);
+}
+
+function showSuccess(message) {
+    showMessage(successMessage, message);
 }
 
 // ==============================
@@ -30,12 +38,12 @@ document.getElementById('createUserForm')
       es_activo:     form.es_activo.value === 'true',
     };
     try {
-      const response = await api.post(API_ENDPOINTS.USERS.CREATE, payload);
-      showSuccess(`Usuario creado con ID ${response.data.usuario_id}`);
+      await api.post(API_ENDPOINTS.USERS.CREATE, payload);
+      showSuccess(`Usuario creado`);
       form.reset();
       loadUsers();
     } catch (error) {
-      showError(error.response?.data?.detail || error.message || 'Error creando usuario');
+      showError(error.response?.detail || error.message || 'Error creando usuario');
     }
   });
 
@@ -44,23 +52,18 @@ document.getElementById('createUserForm')
 // ==============================
 async function loadUsers() {
   try {
-    const response = await api.get(API_ENDPOINTS.USERS.GET_ALL);
-    const users = response.data;
+    const data = await api.get(API_ENDPOINTS.USERS.GET_ALL);
     const tbody = document.getElementById('usersTableBody');
     tbody.innerHTML = '';
-    users.forEach(u => {
+    data.forEach(user => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${u.usuario_id}</td>
-        <td>${u.expediente_id}</td>
-        <td>${u.nombre} ${u.primer_apellido} ${u.segundo_apellido || ''}</td>
-        <td>${u.email}</td>
-        <td>${u.es_admin}</td>
-        <td>${u.es_activo}</td>
-        <td>
-          <button data-id="${u.usuario_id}" class="btn-detail">Detalles</button>
-          <button data-id="${u.usuario_id}" class="btn-load">Cargar</button>
-        </td>
+        <td>${user.usuario_id}</td>
+        <td>${user.expediente_id}</td>
+        <td>${user.nombre} ${user.primer_apellido} ${user.segundo_apellido || ''}</td>
+        <td>${user.email}</td>
+        <td>${user.es_admin}</td>
+        <td>${user.es_activo}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -81,14 +84,13 @@ document.getElementById('getUserDetails')
     const id = document.getElementById('userId').value;
     if (!id) return showError('Ingresa un ID válido');
     try {
-      const response = await api.get(API_ENDPOINTS.USERS.GET(id));
-      const u = response.data;
+      const data = await api.get(API_ENDPOINTS.USERS.GET(id));
       document.getElementById('userDetails').innerHTML = `
-        <pre>${JSON.stringify(u, null, 2)}</pre>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
       `;
       showSuccess('Detalles cargados');
     } catch (error) {
-      showError(error.response?.data?.detail || 'Usuario no encontrado');
+      showError(error.response?.detail || 'Usuario no encontrado');
     }
   });
 
@@ -100,19 +102,21 @@ document.getElementById('loadUserForUpdate')
     const id = document.getElementById('updateUserId').value;
     if (!id) return showError('Ingresa un ID válido');
     try {
-      const response = await api.get(API_ENDPOINTS.USERS.GET(id));
-      const u = response.data;
-      // rellenar formulario
-      document.getElementById('update_expediente_id').value = u.expediente_id;
-      document.getElementById('update_nombre').value        = u.nombre;
-      document.getElementById('update_primer_apellido').value = u.primer_apellido;
-      document.getElementById('update_segundo_apellido').value = u.segundo_apellido || '';
-      document.getElementById('update_email').value         = u.email;
-      document.getElementById('update_es_admin').value      = u.es_admin;
-      document.getElementById('update_es_activo').value     = u.es_activo;
+      console.log('Cargando usuario para actualizar', id);
+      const data = await api.get(API_ENDPOINTS.USERS.GET(id));
+      console.log('Datos del usuario', data);
+      document.getElementById('update_expediente_id').value = data.expediente_id;
+      document.getElementById('update_nombre').value        = data.nombre;
+      document.getElementById('update_primer_apellido').value = data.primer_apellido;
+      document.getElementById('update_segundo_apellido').value = data.segundo_apellido || '';
+      document.getElementById('update_email').value         = data.email;
+      document.getElementById('update_contrasena').value    = data.contrasena;
+      document.getElementById('update_es_admin').value      = data.es_admin;
+      document.getElementById('update_es_activo').value     = data.es_activo;
+      console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
-      showError(error.response?.data?.detail || 'Usuario no encontrado');
+      showError(error.response?.detail || 'Usuario no encontrado');
     }
   });
 
@@ -136,7 +140,7 @@ document.getElementById('updateUserForm')
       showSuccess('Usuario actualizado');
       loadUsers();
     } catch (error) {
-      showError(error.response?.data?.detail || 'Error actualizando');
+      showError(error.response?.detail || 'Error actualizando');
     }
   });
 
@@ -153,6 +157,6 @@ document.getElementById('deleteUserBtn')
       showSuccess('Usuario eliminado');
       loadUsers();
     } catch (error) {
-      showError(error.response?.data?.detail || 'Error eliminando');
+      showError(error.response?.detail || 'Error eliminando');
     }
   });
