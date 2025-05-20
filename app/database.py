@@ -15,6 +15,7 @@ def get_db():
         conn.close()
 
 CREATE_TABLES_SQL = """
+    
     CREATE TABLE IF NOT EXISTS usuarios (
         usuario_id SERIAL PRIMARY KEY,
         expediente_id VARCHAR(50) UNIQUE NOT NULL,
@@ -28,7 +29,20 @@ CREATE_TABLES_SQL = """
         creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
-"""
+
+    CREATE TABLE documentos_practicas (
+        documento_id SERIAL PRIMARY KEY,
+        practica_id INTEGER NOT NULL REFERENCES internships(practica_id) ON 
+        DELETE CASCADE,
+        tipo_documento INTEGER NOT NULL,
+        ruta VARCHAR(255) NOT NULL,
+        es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
+        es_activo BOOLEAN NOT NULL DEFAULT TRUE,
+        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
+    """
 
 def initialize_database():
     conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
