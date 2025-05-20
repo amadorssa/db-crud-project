@@ -23,27 +23,31 @@ function showSuccess(message) {
 // ==============================
 // 1) Crear usuario
 // ==============================
-document.getElementById('createUserForm')
+document.getElementById('createUnitForm')
   .addEventListener('submit', async e => {
     e.preventDefault();
     const form = e.target;
     const payload = {
-      expediente_id: form.expediente_id.value,
+      admin_id: form.admin_id.value,
       nombre:        form.nombre.value,
-      primer_apellido: form.primer_apellido.value,
-      segundo_apellido: form.segundo_apellido.value || null,
-      email:         form.email.value,
-      contrasena:    form.contrasena.value,
-      es_admin:      form.es_admin.value === 'true',
-      es_activo:     form.es_activo.value === 'true',
+      tipo_unidad: parseInt(form.tipo_unidad.value),
+      direccion: form.direccion.value || null,
+      ciudad:         form.ciudad.value || null,
+      estado:    form.estado.value || null,
+	capacidad:      form.capacidad.value ? parseInt(form.capacidad.value) : null,
+      nombre_contacto:     form.nombre_contacto.value,
+      email_contacto: form.email_contacto.value,
+      telefono_contacto: form.telefono_contacto.value,
+      es_disponible: form.es_disponible.value === 'true',
+      es_activo: form.es_activo.value === 'true',
     };
     try {
-      await api.post(API_ENDPOINTS.USERS.CREATE, payload);
-      showSuccess(`Usuario creado`);
+      await api.post(API_ENDPOINTS.UNITS.CREATE, payload);
+      showSuccess(`Unidad creada`);
       form.reset();
       loadUsers();
     } catch (error) {
-      showError(error.response?.detail || error.message || 'Error creando usuario');
+      showError(error.response?.detail || error.message || 'Error creando unidad');
     }
   });
 
