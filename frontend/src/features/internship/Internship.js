@@ -122,13 +122,15 @@ document.getElementById('updateInternshipForm')
     e.preventDefault();
     const id = document.getElementById('updateInternshipId').value;
     const payload = {};
-    alumno_id = document.getElementById('update_alumno_id').value;
-    unidad_id = document.getElementById('update_unidad_id').value;
-    ano = document.getElementById('update_ano').value;
-    periodo = document.getElementById('update_periodo').value;
-    estatus = document.getElementById('update_estatus').value;
+    payload.alumno_id = document.getElementById('update_alumno_id').value;
+    payload.unidad_id = document.getElementById('update_unidad_id').value;
+    payload.ano = document.getElementById('update_ano').value;
+    payload.periodo = document.getElementById('update_periodo').value;
+    payload.estatus = document.getElementById('update_estatus').value;
     try {
+      console.log('Actualizando practica', id);
       await api.put(API_ENDPOINTS.INTERNSHIPS.UPDATE(id), payload);
+      console.log('Practica actualizada', id);
       showSuccess('Practica actualizada');
       form.reset();
       loadInternships();
