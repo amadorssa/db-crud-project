@@ -32,6 +32,7 @@ export const API_ENDPOINTS = {
     GET:     (id) => `/documents/${id}/`,
     UPDATE:  (id) => `/documents/${id}/`,
     DELETE:  (id) => `/documents/${id}/`,
+  },
     
   UNITS: {
     CREATE:  '/units/',
@@ -48,7 +49,6 @@ export const API_ENDPOINTS = {
     UPDATE:  (id) => `/internships/${id}/`,
     DELETE:  (id) => `/internships/${id}/`,
   },
-    
 };
 
 export const api = {

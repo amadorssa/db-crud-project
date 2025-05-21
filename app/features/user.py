@@ -21,13 +21,13 @@ def create_user(payload: dict, conn=Depends(get_db)):
         "email":            payload["email"],
         "contrasena":       payload["contrasena"],
         "es_admin":         payload.get("es_admin", False),
-        "es_activo":        payload.get("es_activo", True),
+        "unidad_id":        payload.get("unidad_id")
     }
 
     query = """
         INSERT INTO usuarios (
             expediente_id, nombre, primer_apellido, segundo_apellido,
-            email, contrasena, es_admin, es_activo) 
+            email, contrasena, es_admin, unidad_id) 
         VALUES (
             %(expediente_id)s, 
             %(nombre)s, 
@@ -36,7 +36,7 @@ def create_user(payload: dict, conn=Depends(get_db)):
             %(email)s, 
             %(contrasena)s, 
             %(es_admin)s, 
-            %(es_activo)s
+            %(unidad_id)s
         );
         """
     try:
@@ -61,7 +61,7 @@ def create_user(payload: dict, conn=Depends(get_db)):
 # ------------------- READ ALL -------------------
 @user_router.get("/users/", status_code=200)
 def get_users(conn=Depends(get_db)):
-    query = "SELECT * FROM usuarios ORDER BY usuario_id;"
+    query = "SELECT * FROM usuarios ORDER BY expediente_id;"
 
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query)
@@ -70,11 +70,11 @@ def get_users(conn=Depends(get_db)):
 
 
 # ------------------- READ ONE -------------------
-@user_router.get("/users/{usuario_id}/", status_code=200)
-def get_user(usuario_id: int, conn=Depends(get_db)):
-    query = "SELECT * FROM usuarios WHERE usuario_id = %s;"
+@user_router.get("/users/{expediente_id}/", status_code=200)
+def get_user(expediente_id: str, conn=Depends(get_db)):
+    query = "SELECT * FROM usuarios WHERE expediente_id = %s;"
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, (usuario_id,))
+        cur.execute(query, (expediente_id,))
         row = cur.fetchone()
     if row is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
@@ -82,17 +82,18 @@ def get_user(usuario_id: int, conn=Depends(get_db)):
 
 
 # ------------------- UPDATE -------------------
-@user_router.put("/users/{usuario_id}/", status_code=200)
-def update_user(usuario_id: int, payload: dict, conn=Depends(get_db)):
+@user_router.put("/users/{expediente_id}/", status_code=200)
+def update_user(expediente_id: str, payload: dict, conn=Depends(get_db)):
     if not payload:
         raise HTTPException(status_code=400, detail="Cuerpo vacío")
 
     required = ("expediente_id", "nombre", "primer_apellido", "email", "contrasena")
     validate_required_fields(payload, required)    
-    payload["usuario_id"] = usuario_id
-
+    payload["expediente_id"] = expediente_id
+    payload["unidad_id"]     = payload.get("unidad_id")
+    
     query = """
-        UPDATE usuarios
+        UPDATE usuarios 
         SET 
             expediente_id   = %(expediente_id)s,
             nombre          = %(nombre)s,
@@ -101,9 +102,9 @@ def update_user(usuario_id: int, payload: dict, conn=Depends(get_db)):
             email           = %(email)s,
             contrasena       = %(contrasena)s,
             es_admin        = %(es_admin)s,
-            es_activo       = %(es_activo)s,
+            unidad_id       = %(unidad_id)s,
             actualizado_el  = CURRENT_TIMESTAMP
-        WHERE usuario_id = %(usuario_id)s;
+        WHERE expediente_id = %(expediente_id)s;
         """
     try:
         with conn.cursor() as cur:
@@ -127,10 +128,10 @@ def update_user(usuario_id: int, payload: dict, conn=Depends(get_db)):
         )
 
 # ------------------- DELETE -------------------
-@user_router.delete("/users/{usuario_id}/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(usuario_id: int, conn=Depends(get_db)):
-    query = "DELETE FROM usuarios WHERE usuario_id = %s;"
+@user_router.delete("/users/{expediente_id}/", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(expediente_id: str, conn=Depends(get_db)):
+    query = "DELETE FROM usuarios WHERE expediente_id = %s;"
 
     with conn.cursor() as cur:
-        cur.execute(query, (usuario_id,))
+        cur.execute(query, (expediente_id,))
         conn.commit()

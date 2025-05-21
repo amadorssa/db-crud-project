@@ -33,7 +33,6 @@ document.getElementById('createDocumentForm')
         "tipo_documento": form.tipo_documento.value,
         "ruta": form.ruta.value,
         "es_verificado": form.es_verificado.value === 'true',
-        "es_activo": form.es_activo.value === 'true',
     };
     try {
       await api.post(API_ENDPOINTS.DOCUMENTS.CREATE, payload);
@@ -61,7 +60,6 @@ async function loadDocuments() {
         <td>${doc.tipo_documento}</td>
         <td>${doc.ruta}</td>
         <td>${doc.es_verificado}</td>
-        <td>${doc.es_activo}</td>
         <td>${doc.creado_el}</td>
         <td>${doc.actualizado_el}</td>
       `;
@@ -105,7 +103,6 @@ document.getElementById('loadDocumentForUpdate')
         document.getElementById('update_practica_id').value = data.practica_id;
         document.getElementById('update_tipo_documento').value = data.tipo_documento;
         document.getElementById('update_es_verificado').value = data.es_verificado;
-        document.getElementById('update_es_activo').value = data.es_activo;
         ruta = data.ruta;
         
         const archivoInfo = document.getElementById('archivo_actual_info');
@@ -138,7 +135,6 @@ document.getElementById('updateDocumentForm')
         "tipo_documento": document.getElementById('update_tipo_documento').value,
         "ruta": ruta,
         "es_verificado": document.getElementById('update_es_verificado').value === 'true',
-        "es_activo": document.getElementById('update_es_activo').value === 'true'
     };
     try {
       await api.put(API_ENDPOINTS.DOCUMENTS.UPDATE(id), payload);

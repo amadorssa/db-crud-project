@@ -89,7 +89,8 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
     payload["unidad_id"] = unidad_id
 
     query = """
-        UPDATE unidades SET
+        UPDATE unidades 
+        SET
             nombre = %(nombre)s,
             tipo_unidad = %(tipo_unidad)s,
             capacidad = %(capacidad)s,

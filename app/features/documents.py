@@ -19,12 +19,11 @@ def create_document(payload: dict, conn=Depends(get_db)):
         "tipo_documento":   payload["tipo_documento"],
         "ruta":             payload["ruta"],
         "es_verificado":    payload.get("es_verificado", False),
-        "es_activo":        payload.get("es_activo", True),
     }
 
     query ="""
         INSERT INTO documentos_practicas (
-            practica_id, tipo_documento, ruta, es_verificado, es_activo,
+            practica_id, tipo_documento, ruta, es_verificado,
             creado_el, actualizado_el
         ) 
         VALUES (
@@ -32,7 +31,6 @@ def create_document(payload: dict, conn=Depends(get_db)):
             %(tipo_documento)s, 
             %(ruta)s, 
             %(es_verificado)s, 
-            %(es_activo)s,
             CURRENT_TIMESTAMP,
             CURRENT_TIMESTAMP
         );
@@ -60,7 +58,7 @@ def create_document(payload: dict, conn=Depends(get_db)):
 @document_router.get("/documents/", status_code=200)
 def get_documents(conn=Depends(get_db)):
     query = """
-        SELECT * FROM documentos_practicas WHERE es_activo = TRUE ORDER BY documento_id;
+        query = "SELECT * FROM documentos_practicas ORDER BY documento_id;
     """
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query)
@@ -71,8 +69,7 @@ def get_documents(conn=Depends(get_db)):
 @document_router.get("/documents/{document_id}/", status_code=200)
 def get_document(document_id: int, conn=Depends(get_db)):
     query = """
-        SELECT * FROM documentos_practicas
-        WHERE documento_id = %s AND es_activo = TRUE;
+        query = "SELECT * FROM documentos_practicas WHERE documento_id = %s;
     """
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (document_id,))
@@ -100,7 +97,6 @@ def update_document(
             tipo_documento = %s,
             ruta = %s,
             es_verificado = %s,
-            es_activo = %s,
             actualizado_el = CURRENT_TIMESTAMP
         WHERE documento_id = %s;
     """
@@ -111,7 +107,6 @@ def update_document(
         payload.get("tipo_documento"),
         payload.get("ruta"),
         payload.get("es_verificado", False),
-        payload.get("es_activo", True),
         document_id
     )
     
@@ -124,8 +119,6 @@ def update_document(
             status_code=404,
             detail="Documento no encontrado."
         )
-
-
 
 # ------------------- DELETE -------------------
 @document_router.delete("/documents/{document_id}/", status_code=200)

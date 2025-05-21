@@ -29,13 +29,13 @@ document.getElementById('createUserForm')
     const form = e.target;
     const payload = {
       expediente_id: form.expediente_id.value,
+      unidad_id:     form.unidad_id.value,
       nombre:        form.nombre.value,
       primer_apellido: form.primer_apellido.value,
       segundo_apellido: form.segundo_apellido.value || null,
       email:         form.email.value,
       contrasena:    form.contrasena.value,
-      es_admin:      form.es_admin.value === 'true',
-      es_activo:     form.es_activo.value === 'true',
+      es_admin:      form.es_admin.value === 'false',
     };
     try {
       await api.post(API_ENDPOINTS.USERS.CREATE, payload);
@@ -58,12 +58,11 @@ async function loadUsers() {
     data.forEach(user => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${user.usuario_id}</td>
         <td>${user.expediente_id}</td>
+        <td>${user.unidad_id || ''}</td>
         <td>${user.nombre} ${user.primer_apellido} ${user.segundo_apellido || ''}</td>
         <td>${user.email}</td>
         <td>${user.es_admin}</td>
-        <td>${user.es_activo}</td>
       `;
       tbody.appendChild(tr);
     });
@@ -105,14 +104,13 @@ document.getElementById('loadUserForUpdate')
       console.log('Cargando usuario para actualizar', id);
       const data = await api.get(API_ENDPOINTS.USERS.GET(id));
       console.log('Datos del usuario', data);
-      document.getElementById('update_expediente_id').value = data.expediente_id;
+      document.getElementById('update_unidad_id').value    = data.unidad_id || '';
       document.getElementById('update_nombre').value        = data.nombre;
       document.getElementById('update_primer_apellido').value = data.primer_apellido;
       document.getElementById('update_segundo_apellido').value = data.segundo_apellido || '';
       document.getElementById('update_email').value         = data.email;
       document.getElementById('update_contrasena').value    = data.contrasena;
       document.getElementById('update_es_admin').value      = data.es_admin;
-      document.getElementById('update_es_activo').value     = data.es_activo;
       console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
@@ -128,13 +126,14 @@ document.getElementById('updateUserForm')
     e.preventDefault();
     const id = document.getElementById('updateUserId').value;
     const payload = {};
-    ['expediente_id','nombre','primer_apellido','segundo_apellido','email','contrasena']
+    ['nombre','primer_apellido','segundo_apellido','email','contrasena']
       .forEach(f => {
         const v = document.getElementById(`update_${f}`).value;
         if (v) payload[f] = f === 'contrasena' && v === '' ? undefined : v;
       });
+    
+    payload.unidad_id = document.getElementById('update_unidad_id').value;
     payload.es_admin  = document.getElementById('update_es_admin').value === 'true';
-    payload.es_activo = document.getElementById('update_es_activo').value === 'true';
     try {
       await api.put(API_ENDPOINTS.USERS.UPDATE(id), payload);
       showSuccess('Usuario actualizado');

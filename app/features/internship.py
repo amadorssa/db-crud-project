@@ -19,19 +19,17 @@ def create_internship(payload: dict, conn=Depends(get_db)):
         "ano":        payload["ano"],
         "periodo":    payload["periodo"],
         "estatus":    payload["estatus"],
-        "es_activo":  payload.get("es_activo", True),
     }
 
     query = """
         INSERT INTO practicas (
-            alumno_id, unidad_id, ano, periodo, estatus, es_activo
+            alumno_id, unidad_id, ano, periodo, estatus
         ) VALUES (
             %(alumno_id)s,
             %(unidad_id)s,
             %(ano)s,
             %(periodo)s,
             %(estatus)s,
-            %(es_activo)s
         );
     """
 
@@ -92,7 +90,6 @@ def update_internship(practica_id: int, payload: dict, conn=Depends(get_db)):
             ano            = %(ano)s,
             periodo        = %(periodo)s,
             estatus        = %(estatus)s,
-            es_activo      = %(es_activo)s,
             actualizado_el = CURRENT_TIMESTAMP
         WHERE practica_id = %(practica_id)s;
     """
