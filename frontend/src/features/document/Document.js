@@ -60,8 +60,6 @@ async function loadDocuments() {
         <td>${doc.tipo_documento}</td>
         <td>${doc.ruta}</td>
         <td>${doc.es_verificado}</td>
-        <td>${doc.creado_el}</td>
-        <td>${doc.actualizado_el}</td>
       `;
       tbody.appendChild(tr);
     });

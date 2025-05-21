@@ -13,32 +13,29 @@ def create_user(payload: dict, conn=Depends(get_db)):
     required = ("expediente_id", "nombre", "primer_apellido", "email", "contrasena")
     validate_required_fields(payload, required)
 
+
     user_data = {
         "expediente_id":    payload["expediente_id"],
-        "unidad_id":        payload("unidad_id"),
         "nombre":           payload["nombre"],
         "primer_apellido":  payload["primer_apellido"],
-        "segundo_apellido": payload("segundo_apellido"),
+        "segundo_apellido": payload["segundo_apellido"],
         "email":            payload["email"],
         "contrasena":       payload["contrasena"],
-        "es_admin":         payload("es_admin"),
-        "unidad_id":        payload("unidad_id")
+        "es_admin":         payload["es_admin"],
     }
 
     query = """
         INSERT INTO usuarios (
-            expediente_id, unidad_id, nombre, primer_apellido, segundo_apellido,
-            email, contrasena, es_admin, unidad_id) 
+            expediente_id, nombre, primer_apellido, segundo_apellido,
+            email, contrasena, es_admin) 
         VALUES (
             %(expediente_id)s, 
-            %(unidad_id)s,
             %(nombre)s, 
             %(primer_apellido)s, 
             %(segundo_apellido)s,
             %(email)s, 
             %(contrasena)s, 
-            %(es_admin)s, 
-            %(unidad_id)s
+            %(es_admin)s
         );
         """
     try:
@@ -52,11 +49,12 @@ def create_user(payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: registro duplicado."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al crear el usuario."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 
@@ -88,27 +86,26 @@ def get_user(expediente_id: str, conn=Depends(get_db)):
 def update_user(expediente_id: str, payload: dict, conn=Depends(get_db)):
     if not payload:
         raise HTTPException(status_code=400, detail="Cuerpo vacío")
-
-    required = ("expediente_id", "nombre", "primer_apellido", "email", "contrasena")
+    print(expediente_id)
+    required = ("nombre", "primer_apellido", "email", "contrasena")
     validate_required_fields(payload, required)    
     payload["expediente_id"] = expediente_id
+    print(payload)
     
     query = """
         UPDATE usuarios 
         SET 
-            expediente_id   = %(expediente_id)s,
-            unidad_id       = %(unidad_id)s,
             nombre          = %(nombre)s,
             primer_apellido = %(primer_apellido)s,
             segundo_apellido= %(segundo_apellido)s,
             email           = %(email)s,
             contrasena       = %(contrasena)s,
-            es_admin        = %(es_admin)s,
-            actualizado_el  = CURRENT_TIMESTAMP
+            es_admin        = %(es_admin)s
         WHERE expediente_id = %(expediente_id)s;
         """
     try:
         with conn.cursor() as cur:
+            print("Ejecutando consulta de actualización")
             cur.execute(query, payload)
             # Si no encontró fila para actualizar:
             if cur.rowcount == 0:
@@ -121,11 +118,12 @@ def update_user(expediente_id: str, payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: expediente_id o email duplicado."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al actualizar el usuario."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- DELETE -------------------

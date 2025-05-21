@@ -48,11 +48,12 @@ def create_unit(payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: registro duplicado."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al crear la unidad."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 
@@ -115,11 +116,12 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: nombre duplicado o admin_id inválido."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al actualizar la unidad."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- DELETE -------------------

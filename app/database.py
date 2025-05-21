@@ -36,9 +36,7 @@ CREATE_TABLES_SQL = """
         segundo_apellido VARCHAR(50),
         email VARCHAR(50) UNIQUE NOT NULL,
         contrasena VARCHAR(255) NOT NULL,
-        es_admin BOOLEAN NOT NULL DEFAULT FALSE,
-        unidad_id INTEGER,
-        FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE SET NULL
+        es_admin BOOLEAN NOT NULL DEFAULT FALSE
     );
 
     CREATE TABLE IF NOT EXISTS practicas (
@@ -47,7 +45,7 @@ CREATE_TABLES_SQL = """
         unidad_id INTEGER NOT NULL,
         ano INTEGER NOT NULL,
         periodo INTEGER NOT NULL,
-        estatus INTEGER NOT NULL,
+        estatus VARCHAR(50) NOT NULL,
         FOREIGN KEY (alumno_id) REFERENCES usuarios(expediente_id) ON DELETE CASCADE,
         FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE RESTRICT
     );
