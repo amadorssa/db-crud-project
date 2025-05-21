@@ -10,7 +10,7 @@ unit_router = APIRouter()
 # ------------------- CREATE -------------------
 @unit_router.post("/units/", status_code=status.HTTP_201_CREATED)
 def create_unit(payload: dict, conn=Depends(get_db)):
-    required = ("nombre", "tipo_unidad", "nombre_contacto")
+    required = ("nombre", "tipo_unidad", "nombre_contacto", "capacidad")
     validate_required_fields(payload, required)
 
     unit_data = {
@@ -48,11 +48,12 @@ def create_unit(payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: registro duplicado."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al crear la unidad."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 
@@ -89,17 +90,19 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
     payload["unidad_id"] = unidad_id
 
     query = """
-        UPDATE unidades SET
+        UPDATE unidades 
+        SET
             nombre = %(nombre)s,
             tipo_unidad = %(tipo_unidad)s,
             capacidad = %(capacidad)s,
             nombre_contacto = %(nombre_contacto)s,
             email_contacto = %(email_contacto)s,
             telefono_contacto = %(telefono_contacto)s,
-            es_disponible = %(es_disponible)s,
-            actualizado_el = CURRENT_TIMESTAMP
+            es_disponible = %(es_disponible)s
         WHERE unidad_id = %(unidad_id)s;
     """
+    print(payload)
+
     try:
         with conn.cursor() as cur:
             cur.execute(query, payload)
@@ -113,11 +116,12 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: nombre duplicado o admin_id inválido."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al actualizar la unidad."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- DELETE -------------------

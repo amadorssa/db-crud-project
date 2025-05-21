@@ -43,15 +43,14 @@
                 <div class="form-group">
                     <label for="tipo_unidad">Tipo Unidad *</label>
                     <select id="tipo_unidad" name="tipo_unidad" required>
-                        <option value="alta_especialidad">Hospital de alta especialidad (tercer nivel)</option>
-                        <option value="hospital_general">Hospital general o regional (segundo nivel)</option>
-                        <option value="primer_nivel">Clínica u hospital de primer nivel (UMF, centro de salud grande)</option>
+                        <option value="alta_especialidad">Hospital de alta especialidad</option>
+                        <option value="hospital_general">Hospital general o regional</option>
+                        <option value="primer_nivel">Unidad Medica Familiar</option>
                         <option value="instituto_nacional">Instituto Nacional de Salud</option>
                         <option value="privado">Hospital o clínica privada</option>
                         <option value="universitario">Hospital universitario</option>
                         <option value="rural">Hospital comunitario o rural</option>
-                        <option value="militar">Institución militar (Hospital militar, naval, etc.)</option>
-                        <option value="otro">Otro (especificar)</option>
+                        <option value="militar">Institución militar</option>
                     </select>
                 </div>
 		<div class="form-group">
@@ -67,7 +66,7 @@
                     <input type="text" id="estado" name="estado">
                 </div>
 		<div class="form-group">
-                    <label for="capacidad">Capacidad</label>
+                    <label for="capacidad">Capacidad *</label>
                     <input type="number" id="capacidad" name="capacidad">
                 </div>
 		<div class="form-group">
@@ -83,7 +82,7 @@
                     <input type="text" id="telefono_contacto" name="telefono_contacto">
                 </div>
 		<div class="form-group">
-                    <label for="es_disponible">¿Esta Disponible?</label>
+                    <label for="es_disponible">¿Esta Disponible? *</label>
                     <select id="es_disponible" name="es_disponible">
                         <option value="false">No</option>
                         <option value="true">Sí</option>
@@ -102,8 +101,9 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-			    <th>Nombre</th>
+                            <th>Nombre</th>
                             <th>Tipo Unidad</th>
+                            <th>Capacidad</th>
                             <th>Nombre Contacto</th>
                             <th>Disponible</th>
                         </tr>
@@ -144,15 +144,14 @@
                 <div class="form-group">
                     <label for="update_tipo_unidad">Tipo Unidad</label>
                     <select id="update_tipo_unidad" name="tipo_unidad" required>
-                        <option value="alta_especialidad">Hospital de alta especialidad (tercer nivel)</option>
-                        <option value="hospital_general">Hospital general o regional (segundo nivel)</option>
-                        <option value="primer_nivel">Clínica u hospital de primer nivel (UMF, centro de salud grande)</option>
+                        <option value="alta_especialidad">Hospital de alta especialidad</option>
+                        <option value="hospital_general">Hospital general o regional</option>
+                        <option value="primer_nivel">Unidad Medica Familiar</option>
                         <option value="instituto_nacional">Instituto Nacional de Salud</option>
                         <option value="privado">Hospital o clínica privada</option>
                         <option value="universitario">Hospital universitario</option>
                         <option value="rural">Hospital comunitario o rural</option>
-                        <option value="militar">Institución militar (Hospital militar, naval, etc.)</option>
-                        <option value="otro">Otro (especificar)</option>
+                        <option value="militar">Institución militar</option>
                     </select>
                 </div>
 		<div class="form-group">

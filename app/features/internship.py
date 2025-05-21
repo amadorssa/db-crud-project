@@ -18,20 +18,18 @@ def create_internship(payload: dict, conn=Depends(get_db)):
         "unidad_id":  payload["unidad_id"],
         "ano":        payload["ano"],
         "periodo":    payload["periodo"],
-        "estatus":    payload["estatus"],
-        "es_activo":  payload.get("es_activo", True),
+        "estatus":    payload["estatus"]
     }
 
     query = """
         INSERT INTO practicas (
-            alumno_id, unidad_id, ano, periodo, estatus, es_activo
+            alumno_id, unidad_id, ano, periodo, estatus
         ) VALUES (
             %(alumno_id)s,
             %(unidad_id)s,
             %(ano)s,
             %(periodo)s,
-            %(estatus)s,
-            %(es_activo)s
+            %(estatus)s
         );
     """
 
@@ -45,11 +43,12 @@ def create_internship(payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: clave foránea inválida o duplicado."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al crear la práctica."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- READ ALL -------------------
@@ -91,9 +90,7 @@ def update_internship(practica_id: int, payload: dict, conn=Depends(get_db)):
             unidad_id      = %(unidad_id)s,
             ano            = %(ano)s,
             periodo        = %(periodo)s,
-            estatus        = %(estatus)s,
-            es_activo      = %(es_activo)s,
-            actualizado_el = CURRENT_TIMESTAMP
+            estatus        = %(estatus)s
         WHERE practica_id = %(practica_id)s;
     """
     try:
@@ -109,11 +106,12 @@ def update_internship(practica_id: int, payload: dict, conn=Depends(get_db)):
             status_code=400,
             detail="Violación de integridad: clave foránea inválida o valores duplicados."
         )
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al actualizar la práctica."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- DELETE -------------------
