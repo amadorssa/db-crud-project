@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 from app.database import initialize_database
 from app.features.user import user_router
+from app.features.documents import document_router
 
 load_dotenv()
 
@@ -43,5 +44,10 @@ app.mount("/static", StaticFiles(directory="frontend"), name="static")
 def serve_user_page():
     return FileResponse("frontend/src/features/user/UserPage.html")
 
+@app.get("/document", response_class=HTMLResponse)
+def serve_document_page():
+    return FileResponse("frontend/src/features/document/DocumentPage.html")
+
 # ---------- API ----------
 app.include_router(user_router, tags=["users"])
+app.include_router(document_router, tags=["documents"])

@@ -30,7 +30,10 @@ CREATE_TABLES_SQL = """
         actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
-    CREATE TABLE documentos_practicas (
+    CREATE TABLE IF NOT EXISTS internships (
+	practica_id SERIAL PRIMARY KEY
+    );
+    CREATE TABLE IF NOT EXISTS documentos_practicas (
         documento_id SERIAL PRIMARY KEY,
         practica_id INTEGER NOT NULL REFERENCES internships(practica_id) ON 
         DELETE CASCADE,
@@ -51,7 +54,3 @@ def initialize_database():
     conn.commit()
     cur.close()
     conn.close()
-
-
-
-
