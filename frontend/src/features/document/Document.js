@@ -3,6 +3,7 @@ import { api, API_ENDPOINTS } from '../../../api.js';
 
 const successMessage = document.getElementById('successMessage');
 const errorMessage = document.getElementById('errorMessage');
+let ruta = "";
 
 function showMessage(element, message, duration = 5000) {
     element.textContent = message;
@@ -103,12 +104,22 @@ document.getElementById('loadDocumentForUpdate')
       const data = await api.get(API_ENDPOINTS.DOCUMENTS.GET(id));
         document.getElementById('update_practica_id').value = data.practica_id;
         document.getElementById('update_tipo_documento').value = data.tipo_documento;
-        document.getElementById('update_ruta').value = data.ruta;
         document.getElementById('update_es_verificado').value = data.es_verificado;
         document.getElementById('update_es_activo').value = data.es_activo;
+        ruta = data.ruta;
+        
+        const archivoInfo = document.getElementById('archivo_actual_info');
+
+      if (data.ruta) {
+          archivoInfo.innerHTML = `${data.ruta} Este es el archivo actual`;
+      } else {
+        archivoInfo.textContent = 'No hay archivo cargado';
+      }
+        
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
-      showError(error.response?.detail || 'Documento no encontrado');
+        console.error('Error al cargar datos para actualizar', error);
+      showError(error.response?.detail || ' no encontrado');
     }
   });
 
@@ -118,18 +129,22 @@ document.getElementById('loadDocumentForUpdate')
 document.getElementById('updateDocumentForm')
   .addEventListener('submit', async e => {
     e.preventDefault();
-    const id = document.getElementById('updateDocumentId').value;
+      const id = document.getElementById('updateDocumentId').value;
+      if (ruta === "") {
+        ruta = document.getElementById('update_ruta').value;
+      }
     const payload = {
         "practica_id": document.getElementById('update_practica_id').value,
         "tipo_documento": document.getElementById('update_tipo_documento').value,
-        "ruta": document.getElementById('update_ruta').value,
+        "ruta": ruta,
         "es_verificado": document.getElementById('update_es_verificado').value === 'true',
         "es_activo": document.getElementById('update_es_activo').value === 'true'
     };
     try {
       await api.put(API_ENDPOINTS.DOCUMENTS.UPDATE(id), payload);
       showSuccess('Documento actualizado');
-      loadDocuments();
+        loadDocuments();
+        ruta = "";
     } catch (error) {
       showError(error.response?.detail || 'Error actualizando');
     }
