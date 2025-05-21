@@ -7,6 +7,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from app.database import initialize_database
 from app.features.user import user_router
 from app.features.unit import unit_router
+from app.features.internship import internship_router
 
 load_dotenv()
 
@@ -48,6 +49,11 @@ def serve_user_page():
 def serve_unit_page():
     return FileResponse("frontend/src/features/unit/UnitPage.html")
 
+@app.get("/internship", response_class=HTMLResponse)
+def serve_internship_page():
+    return FileResponse("frontend/src/features/internship/InternshipPage.html")
+
 # ---------- API ----------
 app.include_router(user_router, tags=["users"])
 app.include_router(unit_router, tags=["units"])
+app.include_router(internship_router, tags=["internships"])

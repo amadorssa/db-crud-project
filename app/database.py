@@ -44,6 +44,19 @@ CREATE_TABLES_SQL = """
         creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
+
+    CREATE TABLE IF NOT EXISTS practicas (
+        practica_id SERIAL PRIMARY KEY,
+        alumno_id INTEGER NOT NULL REFERENCES usuarios(usuario_id) ON DELETE   
+        CASCADE,
+        unidad_id INTEGER NOT NULL REFERENCES unidades(unidad_id),
+        ano INTEGER NOT NULL,
+        periodo INTEGER NOT NULL,
+        estatus INTEGER NOT NULL,
+        es_activo BOOLEAN NOT NULL DEFAULT TRUE,
+        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
 """
 
 def initialize_database():
