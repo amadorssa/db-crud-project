@@ -15,6 +15,7 @@
         <div class="nav-container">
             <a href="#" class="logo">Bases de datos</a>
             <ul>
+                <li><a href="#">Inicio</a></li>
                 <li><a href="/static/src//features/user/UserPage.html">Usuarios</a></li>
                 <li><a href="#">Unidades</a></li>
                 <li><a href="#">Internados</a></li>
@@ -41,7 +42,17 @@
                 </div>
                 <div class="form-group">
                     <label for="tipo_unidad">Tipo Unidad *</label>
-                    <input type="text" id="tipo_unidad" name="tipo_unidad" required>
+                    <select id="tipo_unidad" name="tipo_unidad" required>
+                        <option value="alta_especialidad">Hospital de alta especialidad (tercer nivel)</option>
+                        <option value="hospital_general">Hospital general o regional (segundo nivel)</option>
+                        <option value="primer_nivel">Clínica u hospital de primer nivel (UMF, centro de salud grande)</option>
+                        <option value="instituto_nacional">Instituto Nacional de Salud</option>
+                        <option value="privado">Hospital o clínica privada</option>
+                        <option value="universitario">Hospital universitario</option>
+                        <option value="rural">Hospital comunitario o rural</option>
+                        <option value="militar">Institución militar (Hospital militar, naval, etc.)</option>
+                        <option value="otro">Otro (especificar)</option>
+                    </select>
                 </div>
 		<div class="form-group">
                     <label for="direccion">Dirección</label>
@@ -132,7 +143,17 @@
                 </div>
                 <div class="form-group">
                     <label for="update_tipo_unidad">Tipo Unidad</label>
-                    <input type="text" id="update_tipo_unidad" name="tipo_unidad">
+                    <select id="update_tipo_unidad" name="tipo_unidad" required>
+                        <option value="alta_especialidad">Hospital de alta especialidad (tercer nivel)</option>
+                        <option value="hospital_general">Hospital general o regional (segundo nivel)</option>
+                        <option value="primer_nivel">Clínica u hospital de primer nivel (UMF, centro de salud grande)</option>
+                        <option value="instituto_nacional">Instituto Nacional de Salud</option>
+                        <option value="privado">Hospital o clínica privada</option>
+                        <option value="universitario">Hospital universitario</option>
+                        <option value="rural">Hospital comunitario o rural</option>
+                        <option value="militar">Institución militar (Hospital militar, naval, etc.)</option>
+                        <option value="otro">Otro (especificar)</option>
+                    </select>
                 </div>
 		<div class="form-group">
                     <label for="update_capacidad">Capacidad</label>
