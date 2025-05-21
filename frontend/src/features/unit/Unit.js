@@ -137,6 +137,7 @@ document.getElementById('updateUnitForm')
     try {
       await api.put(API_ENDPOINTS.UNITS.UPDATE(id), payload);
       showSuccess('Unidad actualizado');
+      form.reset();
       loadUnits();
     } catch (error) {
       showError(error.response?.detail || 'Error actualizando');
