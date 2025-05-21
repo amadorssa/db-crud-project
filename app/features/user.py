@@ -15,14 +15,14 @@ def create_user(payload: dict, conn=Depends(get_db)):
 
     user_data = {
         "expediente_id":    payload["expediente_id"],
-        "unidad_id":        payload.get("unidad_id"),
+        "unidad_id":        payload("unidad_id"),
         "nombre":           payload["nombre"],
         "primer_apellido":  payload["primer_apellido"],
-        "segundo_apellido": payload.get("segundo_apellido"),
+        "segundo_apellido": payload("segundo_apellido"),
         "email":            payload["email"],
         "contrasena":       payload["contrasena"],
-        "es_admin":         payload.get("es_admin", False),
-        "unidad_id":        payload.get("unidad_id")
+        "es_admin":         payload("es_admin"),
+        "unidad_id":        payload("unidad_id")
     }
 
     query = """

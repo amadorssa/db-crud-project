@@ -104,9 +104,7 @@ document.getElementById('loadUnitForUpdate')
     const id = document.getElementById('updateUnitId').value;
     if (!id) return showError('Ingresa un ID válido');
     try {
-      console.log('Cargando unidad para actualizar', id);
       const data = await api.get(API_ENDPOINTS.UNITS.GET(id));
-      console.log('Datos de la unidad', data);
       document.getElementById('update_nombre').value = data.nombre;
       document.getElementById('update_tipo_unidad').value        = data.tipo_unidad;
       document.getElementById('update_capacidad').value = data.capacidad || '';
@@ -114,7 +112,6 @@ document.getElementById('loadUnitForUpdate')
       document.getElementById('update_email_contacto').value         = data.email_contacto || '';
       document.getElementById('update_telefono_contacto').value    = data.telefono_contacto || '';
       document.getElementById('update_es_disponible').value     = data.es_disponible;
-      console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
       showError(error.response?.detail || 'Unidad no encontrada');
@@ -128,13 +125,17 @@ document.getElementById('updateUnitForm')
   .addEventListener('submit', async e => {
     e.preventDefault();
     const id = document.getElementById('updateUnitId').value;
+    console.log(id);
     const payload = {};
-      ['nombre', 'tipo_unidad','capacidad','nombre_contacto','email_contacto','telefono_contacto']
-      .forEach(f => {
-        const v = document.getElementById(`update_${f}`).value;
-        if (v) payload[f] = v === '' ? undefined : v;
-      });
+    payload.nombre = document.getElementById('update_nombre').value;
+    payload.tipo_unidad = document.getElementById('update_tipo_unidad').value;
+    payload.capacidad = document.getElementById('update_capacidad').value || null;
+    payload.nombre_contacto = document.getElementById('update_nombre_contacto').value;
+    payload.email_contacto = document.getElementById('update_email_contacto').value || null;
+    payload.telefono_contacto = document.getElementById('update_telefono_contacto').value || null;
     payload.es_disponible  = document.getElementById('update_es_disponible').value === 'true';
+    console.log(payload);
+    
     try {
       await api.put(API_ENDPOINTS.UNITS.UPDATE(id), payload);
       showSuccess('Unidad actualizado');

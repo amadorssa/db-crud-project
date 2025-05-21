@@ -26,9 +26,7 @@ CREATE_TABLES_SQL = """
         nombre_contacto VARCHAR(100) NOT NULL,
         email_contacto VARCHAR(50),
         telefono_contacto VARCHAR(15),
-        es_disponible BOOLEAN NOT NULL DEFAULT TRUE,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        es_disponible BOOLEAN NOT NULL DEFAULT TRUE
     );
 
     CREATE TABLE IF NOT EXISTS usuarios (
@@ -40,8 +38,6 @@ CREATE_TABLES_SQL = """
         contrasena VARCHAR(255) NOT NULL,
         es_admin BOOLEAN NOT NULL DEFAULT FALSE,
         unidad_id INTEGER,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE SET NULL
     );
 
@@ -52,8 +48,6 @@ CREATE_TABLES_SQL = """
         ano INTEGER NOT NULL,
         periodo INTEGER NOT NULL,
         estatus INTEGER NOT NULL,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (alumno_id) REFERENCES usuarios(expediente_id) ON DELETE CASCADE,
         FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE RESTRICT
     );
@@ -64,8 +58,6 @@ CREATE_TABLES_SQL = """
         tipo_documento VARCHAR(20) NOT NULL,
         ruta VARCHAR(255) NOT NULL,
         es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (practica_id) REFERENCES practicas(practica_id) ON DELETE CASCADE
     );
 """

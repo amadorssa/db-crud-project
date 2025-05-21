@@ -81,14 +81,13 @@ def get_unit(unidad_id: int, conn=Depends(get_db)):
 # ------------------- UPDATE -------------------
 @unit_router.put("/units/{unidad_id}/", status_code=200)
 def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
-    print("quiubole")
     if not payload:
         raise HTTPException(status_code=400, detail="Cuerpo vacío")
 
     required = ("nombre", "tipo_unidad", "nombre_contacto")
     validate_required_fields(payload, required)
     payload["unidad_id"] = unidad_id
-    print("quiubole1")
+
     query = """
         UPDATE unidades 
         SET
@@ -98,19 +97,18 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             nombre_contacto = %(nombre_contacto)s,
             email_contacto = %(email_contacto)s,
             telefono_contacto = %(telefono_contacto)s,
-            es_disponible = %(es_disponible)s,
-            actualizado_el = CURRENT_TIMESTAMP
+            es_disponible = %(es_disponible)s
         WHERE unidad_id = %(unidad_id)s;
     """
+    print(payload)
+
     try:
         with conn.cursor() as cur:
             cur.execute(query, payload)
             if cur.rowcount == 0:
                 conn.rollback()
                 raise HTTPException(status_code=404, detail="Unidad no encontrada")
-            print("quiubole3")
             conn.commit()
-            print("quiubole4")
     except IntegrityError:
         conn.rollback()
         raise HTTPException(
@@ -118,7 +116,6 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             detail="Violación de integridad: nombre duplicado o admin_id inválido."
         )
     except Exception:
-        print("quiubole2")
         conn.rollback()
         raise HTTPException(
             status_code=500,
