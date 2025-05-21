@@ -138,6 +138,7 @@ document.getElementById('updateUserForm')
     try {
       await api.put(API_ENDPOINTS.USERS.UPDATE(id), payload);
       showSuccess('Usuario actualizado');
+      form.reset();
       loadUsers();
     } catch (error) {
       showError(error.response?.detail || 'Error actualizando');

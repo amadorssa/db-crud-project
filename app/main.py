@@ -7,6 +7,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from app.database import initialize_database
 from app.features.user import user_router
 from app.features.documents import document_router
+from app.features.unit import unit_router
 
 load_dotenv()
 
@@ -47,7 +48,12 @@ def serve_user_page():
 @app.get("/document", response_class=HTMLResponse)
 def serve_document_page():
     return FileResponse("frontend/src/features/document/DocumentPage.html")
+  
+@app.get("/unit", response_class=HTMLResponse)
+def serve_unit_page():
+    return FileResponse("frontend/src/features/unit/UnitPage.html")
 
 # ---------- API ----------
 app.include_router(user_router, tags=["users"])
+app.include_router(unit_router, tags=["units"])
 app.include_router(document_router, tags=["documents"])

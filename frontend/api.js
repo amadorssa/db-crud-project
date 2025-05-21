@@ -25,12 +25,20 @@ export const API_ENDPOINTS = {
     UPDATE:  (id) => `/users/${id}/`,
     DELETE:  (id) => `/users/${id}/`,
   },
+
   DOCUMENTS: {
     CREATE:  '/documents/',
     GET_ALL: '/documents/',
     GET:     (id) => `/documents/${id}/`,
     UPDATE:  (id) => `/documents/${id}/`,
     DELETE:  (id) => `/documents/${id}/`,
+    
+  UNITS: {
+    CREATE:  '/units/',
+    GET_ALL: '/units/',
+    GET:     (id) => `/units/${id}/`,
+    UPDATE:  (id) => `/units/${id}/`,
+    DELETE:  (id) => `/units/${id}/`,
   },
 };
 

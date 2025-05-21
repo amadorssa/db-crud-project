@@ -2,6 +2,6 @@ export const ROUTES = {
     HOME: '/',
 
     USER: '/user',
-    SITE: '/site',
+    UNIT: '/unit',
     INTERNSHIP: '/internship',
 }
