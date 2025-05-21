@@ -15,6 +15,7 @@ def get_db():
         conn.close()
 
 CREATE_TABLES_SQL = """
+    
     CREATE TABLE IF NOT EXISTS usuarios (
         usuario_id SERIAL PRIMARY KEY,
         expediente_id VARCHAR(50) UNIQUE NOT NULL,
@@ -24,6 +25,22 @@ CREATE_TABLES_SQL = """
         email VARCHAR(50) UNIQUE NOT NULL,
         contrasena VARCHAR NOT NULL,
         es_admin BOOLEAN NOT NULL DEFAULT FALSE,
+        es_activo BOOLEAN NOT NULL DEFAULT TRUE,
+        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS internships (
+	      practica_id SERIAL PRIMARY KEY
+    );
+    
+    CREATE TABLE IF NOT EXISTS documentos_practicas (
+        documento_id SERIAL PRIMARY KEY,
+        practica_id INTEGER NOT NULL REFERENCES internships(practica_id) ON 
+        DELETE CASCADE,
+        tipo_documento VARCHAR(20) NOT NULL,
+        ruta VARCHAR(255) NOT NULL,
+        es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
         es_activo BOOLEAN NOT NULL DEFAULT TRUE,
         creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -53,7 +70,3 @@ def initialize_database():
     conn.commit()
     cur.close()
     conn.close()
-
-
-
-
