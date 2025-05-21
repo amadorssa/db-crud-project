@@ -29,16 +29,16 @@ document.getElementById('createUserForm')
     const form = e.target;
     const payload = {
       expediente_id: form.expediente_id.value,
-      unidad_id:     form.unidad_id.value,
       nombre:        form.nombre.value,
       primer_apellido: form.primer_apellido.value,
       segundo_apellido: form.segundo_apellido.value || null,
       email:         form.email.value,
       contrasena:    form.contrasena.value,
-      es_admin:      form.es_admin.value === 'false',
+      es_admin:      form.es_admin.value === 'true',
     };
     try {
       await api.post(API_ENDPOINTS.USERS.CREATE, payload);
+      console.log('Usuario creado');
       showSuccess(`Usuario creado`);
       form.reset();
       loadUsers();
@@ -59,7 +59,6 @@ async function loadUsers() {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${user.expediente_id}</td>
-        <td>${user.unidad_id || ''}</td>
         <td>${user.nombre} ${user.primer_apellido} ${user.segundo_apellido || ''}</td>
         <td>${user.email}</td>
         <td>${user.es_admin}</td>
@@ -101,17 +100,13 @@ document.getElementById('loadUserForUpdate')
     const id = document.getElementById('updateUserId').value;
     if (!id) return showError('Ingresa un ID válido');
     try {
-      console.log('Cargando usuario para actualizar', id);
       const data = await api.get(API_ENDPOINTS.USERS.GET(id));
-      console.log('Datos del usuario', data);
-      document.getElementById('update_unidad_id').value    = data.unidad_id || '';
       document.getElementById('update_nombre').value        = data.nombre;
       document.getElementById('update_primer_apellido').value = data.primer_apellido;
       document.getElementById('update_segundo_apellido').value = data.segundo_apellido || '';
       document.getElementById('update_email').value         = data.email;
       document.getElementById('update_contrasena').value    = data.contrasena;
       document.getElementById('update_es_admin').value      = data.es_admin;
-      console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
       showError(error.response?.detail || 'Usuario no encontrado');
@@ -124,18 +119,17 @@ document.getElementById('loadUserForUpdate')
 document.getElementById('updateUserForm')
   .addEventListener('submit', async e => {
     e.preventDefault();
-    const id = document.getElementById('updateUserId').value;
+    const expediente_id = document.getElementById('updateUserId').value;
     const payload = {};
-    ['nombre','primer_apellido','segundo_apellido','email','contrasena']
-      .forEach(f => {
-        const v = document.getElementById(`update_${f}`).value;
-        if (v) payload[f] = f === 'contrasena' && v === '' ? undefined : v;
-      });
-    
-    payload.unidad_id = document.getElementById('update_unidad_id').value;
+    payload.nombre = document.getElementById('update_nombre').value;
+    payload.primer_apellido = document.getElementById('update_primer_apellido').value;
+    payload.segundo_apellido = document.getElementById('update_segundo_apellido').value || null;
+    payload.email = document.getElementById('update_email').value;
+    payload.contrasena = document.getElementById('update_contrasena').value || null;
     payload.es_admin  = document.getElementById('update_es_admin').value === 'true';
+    console.log('Payload', payload);
     try {
-      await api.put(API_ENDPOINTS.USERS.UPDATE(id), payload);
+      await api.put(API_ENDPOINTS.USERS.UPDATE(expediente_id), payload);
       showSuccess('Usuario actualizado');
       form.reset();
       loadUsers();

@@ -23,16 +23,13 @@ def create_document(payload: dict, conn=Depends(get_db)):
 
     query ="""
         INSERT INTO documentos_practicas (
-            practica_id, tipo_documento, ruta, es_verificado,
-            creado_el, actualizado_el
+            practica_id, tipo_documento, ruta, es_verificado
         ) 
         VALUES (
             %(practica_id)s, 
             %(tipo_documento)s, 
             %(ruta)s, 
-            %(es_verificado)s, 
-            CURRENT_TIMESTAMP,
-            CURRENT_TIMESTAMP
+            %(es_verificado)s
         );
     """
     
@@ -49,17 +46,16 @@ def create_document(payload: dict, conn=Depends(get_db)):
         )
     except Exception as e:
         conn.rollback()
+        print("Error actualizando usuario:", e)
         raise HTTPException(
             status_code=500,
-            detail="Error interno al crear el documento."
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- READ ALL -------------------
 @document_router.get("/documents/", status_code=200)
 def get_documents(conn=Depends(get_db)):
-    query = """
-        query = "SELECT * FROM documentos_practicas ORDER BY documento_id;
-    """
+    query = "SELECT * FROM documentos_practicas ORDER BY documento_id;"
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query)
         documents = cur.fetchall()
@@ -68,9 +64,7 @@ def get_documents(conn=Depends(get_db)):
 # ------------------- READ ONE -------------------
 @document_router.get("/documents/{document_id}/", status_code=200)
 def get_document(document_id: int, conn=Depends(get_db)):
-    query = """
-        query = "SELECT * FROM documentos_practicas WHERE documento_id = %s;
-    """
+    query = "SELECT * FROM documentos_practicas WHERE documento_id = %s;"
     with conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, (document_id,))
         document = cur.fetchone()
@@ -90,34 +84,41 @@ def update_document(
     payload: dict, 
     conn=Depends(get_db)
 ):
+    if not payload:
+        raise HTTPException(status_code=400, detail="Cuerpo vacío")
+
+    required = ("practica_id", "tipo_documento", "ruta", "es_verificado")
+    validate_required_fields(payload, required)
+
     query = """
         UPDATE documentos_practicas
         SET
-    	    practica_id = %s,
-            tipo_documento = %s,
-            ruta = %s,
-            es_verificado = %s,
-            actualizado_el = CURRENT_TIMESTAMP
-        WHERE documento_id = %s;
+    	    practica_id = %(practica_id)s,
+            tipo_documento = %(tipo_documento)s,
+            ruta = %(ruta)s,
+            es_verificado = %(es_verificado)s
+        WHERE documento_id = %(practica_id)s;
     """
     
-    
-    document_data = (
-        payload.get("practica_id"),
-        payload.get("tipo_documento"),
-        payload.get("ruta"),
-        payload.get("es_verificado", False),
-        document_id
-    )
-    
-    with conn.cursor(cursor_factory=RealDictCursor) as cur:
-        cur.execute(query, document_data)
-        conn.commit()
-    
-    if cur.rowcount == 0:
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, payload)
+            if cur.rowcount == 0:
+                conn.rollback()
+                raise HTTPException(status_code=404, detail="Documento no encontrado")
+            conn.commit()
+    except IntegrityError:
+        conn.rollback()
         raise HTTPException(
-            status_code=404,
-            detail="Documento no encontrado."
+            status_code=400,
+            detail="Violación de integridad: clave foránea inválida o valores duplicados."
+        )
+    except Exception as e:
+        conn.rollback()
+        print("Error actualizando usuario:", e)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error interno al actualizar el usuario: {e}"
         )
 
 # ------------------- DELETE -------------------

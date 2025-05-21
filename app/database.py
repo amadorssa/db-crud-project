@@ -28,9 +28,7 @@ CREATE_TABLES_SQL = """
         nombre_contacto VARCHAR(100) NOT NULL,
         email_contacto VARCHAR(50),
         telefono_contacto VARCHAR(15),
-        es_disponible BOOLEAN NOT NULL DEFAULT TRUE,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        es_disponible BOOLEAN NOT NULL DEFAULT TRUE
     );
 
     CREATE TABLE IF NOT EXISTS usuarios (
@@ -40,11 +38,7 @@ CREATE_TABLES_SQL = """
         segundo_apellido VARCHAR(50),
         email VARCHAR(50) UNIQUE NOT NULL,
         contrasena VARCHAR(255) NOT NULL,
-        es_admin BOOLEAN NOT NULL DEFAULT FALSE,
-        unidad_id INTEGER,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE SET NULL
+        es_admin BOOLEAN NOT NULL DEFAULT FALSE
     );
 
     CREATE TABLE IF NOT EXISTS practicas (
@@ -53,9 +47,7 @@ CREATE_TABLES_SQL = """
         unidad_id INTEGER NOT NULL,
         ano INTEGER NOT NULL,
         periodo INTEGER NOT NULL,
-        estatus INTEGER NOT NULL,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        estatus VARCHAR(50) NOT NULL,
         FOREIGN KEY (alumno_id) REFERENCES usuarios(expediente_id) ON DELETE CASCADE,
         FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE RESTRICT
     );
@@ -66,8 +58,6 @@ CREATE_TABLES_SQL = """
         tipo_documento VARCHAR(20) NOT NULL,
         ruta VARCHAR(255) NOT NULL,
         es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (practica_id) REFERENCES practicas(practica_id) ON DELETE CASCADE
     );
 
