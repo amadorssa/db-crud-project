@@ -1,0 +1,159 @@
+<!-- frontend/user/UserPage.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internados</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script type="module" src="/static/api.js"></script>
+    <script type="module" src="/static/routes.js"></script>
+    <script type="module" src="/static/src/features/internship/Internship.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+          <a href="#" class="logo">Bases de datos</a>
+          <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/user">Usuarios</a></li>
+            <li><a href="/unit">Unidades</a></li>
+            <li><a href="/internship">Internados</a></li>
+            <li><a href="#">Reportes</a></li>
+            <li><a href="/document">Documentos</a></li>
+          </ul>
+        </div>
+      </nav>
+
+    <div class="container">
+        <h1>Internados</h1>
+        
+        <!-- Mensaje de éxito y error -->
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+        
+        <!-- Sección para crear usuarios -->
+        <div class="section">
+            <h2>Crear Practica</h2>
+            <form id="createInternshipForm">
+                <div class="form-group">
+                    <label for="alumno_id">Alumno ID *</label>
+                    <input type="number" id="alumno_id" name="alumno_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="unidad_id">Unidad ID *</label>
+                    <input type="number" id="unidad_id" name="unidad_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="ano">Año *</label>
+                    <input type="number" id="ano" name="ano" required>
+                </div>
+                <div class="form-group">
+                    <label for="periodo">Periodo *</label>
+                    <select id="periodo" name="periodo" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="estatus">Estatus *</label>
+                    <select id="estatus" name="estatus" required>
+                        <option value="en_curso">En curso</option>
+                        <option value="suspendida">Suspendida</option>
+                        <option value="finalizada">Finalizada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <button type="submit">Crear Practica</button>
+            </form>
+        </div>
+        
+        <!-- Sección para listar usuarios -->
+        <div class="section">
+            <h2>Lista de Practicas</h2>
+            <button id="refreshList">Actualizar Lista</button>
+            <div id="internshipsList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Alumno ID</th>
+                            <th>Unidad ID</th>
+                            <th>Año</th>
+                            <th>Periodo</th>
+                            <th>Estatus</th>
+                        </tr>
+                    </thead>
+                    <tbody id="internshipsTableBody">
+                        <!-- Aquí se mostrarán los usuarios -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Sección para ver detalles de un usuario -->
+        <div class="section">
+            <h2>Detalles de Practica</h2>
+            <div class="form-group">
+                <label for="practicaId">ID de Practica</label>
+                <input type="number" id="practicaId" name="practicaId" min="1">
+                <button id="getInternshipDetails">Ver Detalles</button>
+            </div>
+            <div id="internshipDetails" style="margin-top: 20px;">
+                <!-- Aquí se mostrarán los detalles del usuario -->
+            </div>
+        </div>
+        
+        <!-- Sección para actualizar usuario -->
+        <div class="section">
+            <h2>Actualizar Practica</h2>
+            <div class="form-group">
+                <label for="updateInternshipId">ID de Practica a Actualizar *</label>
+                <input type="number" id="updateInternshipId" name="updateInternshipId" min="1" required>
+                <button id="loadInternshipForUpdate">Cargar Datos</button>
+            </div>
+            <form id="updateInternshipForm" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="update_alumno_id">Alumno ID</label>
+                    <input type="number" id="update_alumno_id" name="alumno_id">
+                </div>
+                <div class="form-group">
+                    <label for="update_unidad_id">Unidad ID</label>
+                    <input type="number" id="update_unidad_id" name="unidad_id">
+                </div>
+                <div class="form-group">
+                    <label for="update_ano">Año</label>
+                    <input type="number" id="update_ano" name="ano">
+                </div>
+                <div class="form-group">
+                    <label for="update_periodo">Periodo</label>
+                    <select id="update_periodo" name="periodo">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="update_estatus">Estatus</label>
+                    <select id="update_estatus" name="estatus">
+                        <option value="en_curso">En curso</option>
+                        <option value="suspendida">Suspendida</option>
+                        <option value="finalizada">Finalizada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <button type="submit">Actualizar Practica</button>
+            </form>
+        </div>
+        
+        <!-- Sección para eliminar usuario -->
+        <div class="section">
+            <h2>Eliminar Practica</h2>
+            <div class="form-group">
+                <label for="deleteInternshipId">ID de Practica a Eliminar</label>
+                <input type="number" id="deleteInternshipId" name="deleteInternshipId" min="1" required>
+            </div>
+            <button id="deleteInternshipBtn" class="delete-btn">Eliminar Practica</button>
+        </div>
+    </div>
+</body>
+</html>

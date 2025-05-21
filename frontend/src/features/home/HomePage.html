@@ -1,0 +1,50 @@
+<!-- frontend/unit/PracticasPorUnidad.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prácticas por Unidad</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script type="module" src="/static/api.js"></script>
+  <script type="module" src="/static/routes.js"></script>
+</head>
+<body>
+  <!-- Reusa tu nav existente -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo">Bases de datos</a>
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/user">Usuarios</a></li>
+        <li><a href="/unit">Unidades</a></li>
+        <li><a href="/internship">Internados</a></li>
+        <li><a href="#">Reportes</a></li>
+        <li><a href="/document">Documentos</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Prácticas por Unidad</h1>
+
+    <!-- Tarjeta de reporte -->
+    <div class="section">
+      <h2>Cantidad de prácticas por tipo de unidad</h2>
+      <div class="card report-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo de Unidad</th>
+              <th>Cantidad</th>
+            </tr>
+          </thead>
+          <tbody id="practicasCountBody">
+            <!-- Se llenará vía JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

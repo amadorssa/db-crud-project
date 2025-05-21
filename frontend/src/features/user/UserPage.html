@@ -1,4 +1,4 @@
-<!-- frontend/user/user.html -->
+<!-- frontend/user/UserPage.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,11 +15,12 @@
         <div class="nav-container">
           <a href="#" class="logo">Bases de datos</a>
           <ul>
-            <li><a href="#">Usuarios</a></li>
-            <li><a href="#">Unidades</a></li>
-            <li><a href="#">Internados</a></li>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/user">Usuarios</a></li>
+            <li><a href="/unit">Unidades</a></li>
+            <li><a href="/internship">Internados</a></li>
             <li><a href="#">Reportes</a></li>
-            <li><a href="#">Documentos</a></li>
+            <li><a href="/document">Documentos</a></li>
           </ul>
         </div>
       </nav>
@@ -66,13 +67,6 @@
                         <option value="true">Sí</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="es_activo">¿Está Activo?</label>
-                    <select id="es_activo" name="es_activo">
-                        <option value="true">Sí</option>
-                        <option value="false">No</option>
-                    </select>
-                </div>
                 <button type="submit">Crear Usuario</button>
             </form>
         </div>
@@ -85,12 +79,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Expediente</th>
                             <th>Nombre Completo</th>
                             <th>Email</th>
                             <th>Es Admin</th>
-                            <th>Activo</th>
                         </tr>
                     </thead>
                     <tbody id="usersTableBody">
@@ -118,14 +110,10 @@
             <h2>Actualizar Usuario</h2>
             <div class="form-group">
                 <label for="updateUserId">ID de Usuario a Actualizar *</label>
-                <input type="number" id="updateUserId" name="updateUserId" min="1" required>
+                <input type="text" id="updateUserId" name="updateUserId" min="1" required>
                 <button id="loadUserForUpdate">Cargar Datos</button>
             </div>
             <form id="updateUserForm" style="margin-top: 20px;">
-                <div class="form-group">
-                    <label for="update_expediente_id">Expediente ID</label>
-                    <input type="text" id="update_expediente_id" name="expediente_id">
-                </div>
                 <div class="form-group">
                     <label for="update_nombre">Nombre</label>
                     <input type="text" id="update_nombre" name="nombre">
@@ -151,13 +139,6 @@
                     <select id="update_es_admin" name="es_admin">
                         <option value="false">No</option>
                         <option value="true">Sí</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="update_es_activo">¿Está Activo?</label>
-                    <select id="update_es_activo" name="es_activo">
-                        <option value="true">Sí</option>
-                        <option value="false">No</option>
                     </select>
                 </div>
                 <button type="submit">Actualizar Usuario</button>

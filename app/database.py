@@ -14,19 +14,49 @@ def get_db():
     finally:
         conn.close()
 
-CREATE_TABLES_SQL = """
+CREATE_TABLES_SQL = """    
+    CREATE TABLE IF NOT EXISTS unidades (
+        unidad_id SERIAL PRIMARY KEY,
+        nombre VARCHAR(100) UNIQUE NOT NULL,
+        tipo_unidad VARCHAR(100) NOT NULL,
+        direccion VARCHAR(255),
+        ciudad VARCHAR(50),
+        estado VARCHAR(50),
+        capacidad INTEGER,
+        nombre_contacto VARCHAR(100) NOT NULL,
+        email_contacto VARCHAR(50),
+        telefono_contacto VARCHAR(15),
+        es_disponible BOOLEAN NOT NULL DEFAULT TRUE
+    );
+
     CREATE TABLE IF NOT EXISTS usuarios (
-        usuario_id SERIAL PRIMARY KEY,
-        expediente_id VARCHAR(50) UNIQUE NOT NULL,
+        expediente_id VARCHAR(50) PRIMARY KEY,
         nombre VARCHAR(50) NOT NULL,
         primer_apellido VARCHAR(50) NOT NULL,
         segundo_apellido VARCHAR(50),
         email VARCHAR(50) UNIQUE NOT NULL,
-        contrasena VARCHAR NOT NULL,
-        es_admin BOOLEAN NOT NULL DEFAULT FALSE,
-        es_activo BOOLEAN NOT NULL DEFAULT TRUE,
-        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        contrasena VARCHAR(255) NOT NULL,
+        es_admin BOOLEAN NOT NULL DEFAULT FALSE
+    );
+
+    CREATE TABLE IF NOT EXISTS practicas (
+        practica_id SERIAL PRIMARY KEY,
+        alumno_id VARCHAR(50) NOT NULL,
+        unidad_id INTEGER NOT NULL,
+        ano INTEGER NOT NULL,
+        periodo INTEGER NOT NULL,
+        estatus VARCHAR(50) NOT NULL,
+        FOREIGN KEY (alumno_id) REFERENCES usuarios(expediente_id) ON DELETE CASCADE,
+        FOREIGN KEY (unidad_id) REFERENCES unidades(unidad_id) ON DELETE RESTRICT
+    );
+
+    CREATE TABLE IF NOT EXISTS documentos_practicas (
+        documento_id SERIAL PRIMARY KEY,
+        practica_id INTEGER NOT NULL,
+        tipo_documento VARCHAR(20) NOT NULL,
+        ruta VARCHAR(255) NOT NULL,
+        es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
+        FOREIGN KEY (practica_id) REFERENCES practicas(practica_id) ON DELETE CASCADE
     );
 """
 
@@ -37,7 +67,3 @@ def initialize_database():
     conn.commit()
     cur.close()
     conn.close()
-
-
-
-
