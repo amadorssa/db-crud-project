@@ -57,6 +57,10 @@ export const API_ENDPOINTS = {
     UPDATE:  (id) => `/reportes/${id}/`,
     DELETE:  (id) => `/reportes/${id}/`,
   },
+
+  HOME: {
+    GET:     '/stats/',
+  },
 };
 
 export const api = {

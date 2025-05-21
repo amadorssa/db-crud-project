@@ -10,6 +10,7 @@ from app.features.documents import document_router
 from app.features.unit import unit_router
 from app.features.internship import internship_router
 from app.features.reports_incidents import report_router
+from app.features.home import home_router
 
 load_dotenv()
 
@@ -59,7 +60,7 @@ def serve_unit_page():
 def serve_internship_page():
     return FileResponse("frontend/src/features/internship/InternshipPage.html")
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/home", response_class=HTMLResponse)
 def serve_home_page():
     return FileResponse("frontend/src/features/home/HomePage.html")
 
@@ -73,3 +74,4 @@ app.include_router(unit_router, tags=["units"])
 app.include_router(internship_router, tags=["internships"])
 app.include_router(document_router, tags=["documents"])
 app.include_router(report_router, tags=["reportes"])
+app.include_router(home_router, tags=["home"])

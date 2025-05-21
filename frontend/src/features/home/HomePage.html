@@ -7,7 +7,7 @@
   <title>Prácticas por Unidad</title>
   <link rel="stylesheet" href="/static/styles.css" />
   <script type="module" src="/static/api.js"></script>
-  <script type="module" src="/static/routes.js"></script>
+  <script type="module" src="/static/src/features/home/Home.js"></script>
 </head>
 <body>
   <!-- Reusa tu nav existente -->
@@ -27,20 +27,15 @@
 
   <div class="container">
     <h1>Prácticas por Unidad</h1>
-
-    <!-- Tarjeta de reporte -->
     <div class="section">
       <h2>Cantidad de prácticas por tipo de unidad</h2>
       <div class="card report-card">
         <table>
           <thead>
-            <tr>
-              <th>Tipo de Unidad</th>
-              <th>Cantidad</th>
-            </tr>
+            <tr><th>Tipo de Unidad</th><th>Cantidad</th></tr>
           </thead>
           <tbody id="practicasCountBody">
-            <!-- Se llenará vía JS -->
+            <!-- … -->
           </tbody>
         </table>
       </div>
