@@ -128,7 +128,7 @@ def update_user(expediente_id: str, payload: dict, conn=Depends(get_db)):
 
 # ------------------- DELETE -------------------
 @user_router.delete("/users/{expediente_id}/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(expediente_id : str, conn=Depends(get_db)):
+def delete_user(expediente_id: str, conn=Depends(get_db)):
     query = "DELETE FROM usuarios WHERE expediente_id = %s;"
 
     with conn.cursor() as cur:
