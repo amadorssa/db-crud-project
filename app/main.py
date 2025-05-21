@@ -58,6 +58,10 @@ def serve_unit_page():
 def serve_internship_page():
     return FileResponse("frontend/src/features/internship/InternshipPage.html")
 
+@app.get("/", response_class=HTMLResponse)
+def serve_home_page():
+    return FileResponse("frontend/src/features/home/HomePage.html")
+
 # ---------- API ----------
 app.include_router(user_router, tags=["users"])
 app.include_router(unit_router, tags=["units"])
