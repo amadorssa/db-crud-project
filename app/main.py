@@ -9,6 +9,7 @@ from app.features.user import user_router
 from app.features.documents import document_router
 from app.features.unit import unit_router
 from app.features.internship import internship_router
+from app.features.reports_incidents import report_router
 
 load_dotenv()
 
@@ -62,8 +63,13 @@ def serve_internship_page():
 def serve_home_page():
     return FileResponse("frontend/src/features/home/HomePage.html")
 
+@app.get("/reportes", response_class=HTMLResponse)
+def serve_user_page():
+    return FileResponse("frontend/src/features/report/ReportPage.html")  
+
 # ---------- API ----------
 app.include_router(user_router, tags=["users"])
 app.include_router(unit_router, tags=["units"])
 app.include_router(internship_router, tags=["internships"])
 app.include_router(document_router, tags=["documents"])
+app.include_router(report_router, tags=["reportes"])

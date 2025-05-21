@@ -1,10 +1,12 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+# Carga el archivo .env desde el directorio actual (donde está este archivo)
+load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
-load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_db():
@@ -57,6 +59,21 @@ CREATE_TABLES_SQL = """
         ruta VARCHAR(255) NOT NULL,
         es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
         FOREIGN KEY (practica_id) REFERENCES practicas(practica_id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS reportes (
+        reporte_id SERIAL PRIMARY KEY,
+        alumno_id VARCHAR(50) REFERENCES usuarios(expediente_id),
+        practica_id INTEGER REFERENCES practicas(practica_id),
+        fecha DATE NOT NULL,
+        unidad VARCHAR(50) NOT NULL,
+        tipo_reporte VARCHAR(100) NOT NULL,
+        descripcion TEXT NOT NULL,
+        evidencia TEXT,
+        anonimo BOOLEAN NOT NULL,
+        es_abierto BOOLEAN NOT NULL DEFAULT TRUE,
+        creado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        actualizado_el TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 """
 
