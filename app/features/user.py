@@ -15,6 +15,7 @@ def create_user(payload: dict, conn=Depends(get_db)):
 
     user_data = {
         "expediente_id":    payload["expediente_id"],
+        "unidad_id":        payload.get("unidad_id"),
         "nombre":           payload["nombre"],
         "primer_apellido":  payload["primer_apellido"],
         "segundo_apellido": payload.get("segundo_apellido"),
@@ -26,10 +27,11 @@ def create_user(payload: dict, conn=Depends(get_db)):
 
     query = """
         INSERT INTO usuarios (
-            expediente_id, nombre, primer_apellido, segundo_apellido,
+            expediente_id, unidad_id, nombre, primer_apellido, segundo_apellido,
             email, contrasena, es_admin, unidad_id) 
         VALUES (
             %(expediente_id)s, 
+            %(unidad_id)s,
             %(nombre)s, 
             %(primer_apellido)s, 
             %(segundo_apellido)s,
@@ -90,19 +92,18 @@ def update_user(expediente_id: str, payload: dict, conn=Depends(get_db)):
     required = ("expediente_id", "nombre", "primer_apellido", "email", "contrasena")
     validate_required_fields(payload, required)    
     payload["expediente_id"] = expediente_id
-    payload["unidad_id"]     = payload.get("unidad_id")
     
     query = """
         UPDATE usuarios 
         SET 
             expediente_id   = %(expediente_id)s,
+            unidad_id       = %(unidad_id)s,
             nombre          = %(nombre)s,
             primer_apellido = %(primer_apellido)s,
             segundo_apellido= %(segundo_apellido)s,
             email           = %(email)s,
             contrasena       = %(contrasena)s,
             es_admin        = %(es_admin)s,
-            unidad_id       = %(unidad_id)s,
             actualizado_el  = CURRENT_TIMESTAMP
         WHERE expediente_id = %(expediente_id)s;
         """

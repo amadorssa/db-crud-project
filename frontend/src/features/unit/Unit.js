@@ -63,6 +63,7 @@ async function loadUnits() {
         <td>${unit.unidad_id}</td>
         <td>${unit.nombre}</td>
         <td>${unit.tipo_unidad}</td>
+        <td>${unit.capacidad}</td>
         <td>${unit.nombre_contacto}</td>
         <td>${unit.es_disponible}</td>
       `;

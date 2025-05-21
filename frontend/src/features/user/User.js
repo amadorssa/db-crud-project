@@ -35,10 +35,11 @@ document.getElementById('createUserForm')
       segundo_apellido: form.segundo_apellido.value || null,
       email:         form.email.value,
       contrasena:    form.contrasena.value,
-      es_admin:      form.es_admin.value === 'false',
+      es_admin:      form.es_admin.value === 'true',
     };
     try {
       await api.post(API_ENDPOINTS.USERS.CREATE, payload);
+      console.log('Usuario creado');
       showSuccess(`Usuario creado`);
       form.reset();
       loadUsers();

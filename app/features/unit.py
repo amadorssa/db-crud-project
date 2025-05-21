@@ -10,7 +10,7 @@ unit_router = APIRouter()
 # ------------------- CREATE -------------------
 @unit_router.post("/units/", status_code=status.HTTP_201_CREATED)
 def create_unit(payload: dict, conn=Depends(get_db)):
-    required = ("nombre", "tipo_unidad", "nombre_contacto")
+    required = ("nombre", "tipo_unidad", "nombre_contacto", "capacidad")
     validate_required_fields(payload, required)
 
     unit_data = {
@@ -81,13 +81,14 @@ def get_unit(unidad_id: int, conn=Depends(get_db)):
 # ------------------- UPDATE -------------------
 @unit_router.put("/units/{unidad_id}/", status_code=200)
 def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
+    print("quiubole")
     if not payload:
         raise HTTPException(status_code=400, detail="Cuerpo vacío")
 
     required = ("nombre", "tipo_unidad", "nombre_contacto")
     validate_required_fields(payload, required)
     payload["unidad_id"] = unidad_id
-
+    print("quiubole1")
     query = """
         UPDATE unidades 
         SET
@@ -107,7 +108,9 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             if cur.rowcount == 0:
                 conn.rollback()
                 raise HTTPException(status_code=404, detail="Unidad no encontrada")
+            print("quiubole3")
             conn.commit()
+            print("quiubole4")
     except IntegrityError:
         conn.rollback()
         raise HTTPException(
@@ -115,6 +118,7 @@ def update_unit(unidad_id: int, payload: dict, conn=Depends(get_db)):
             detail="Violación de integridad: nombre duplicado o admin_id inválido."
         )
     except Exception:
+        print("quiubole2")
         conn.rollback()
         raise HTTPException(
             status_code=500,
