@@ -40,8 +40,15 @@
         </div>
         <div class="form-group">
           <label for="tipo_documento">Tipo de Documento *</label>
-          <input type="text" id="tipo_documento" name="tipo_documento" required />
+          <select id="tipo_documento" name="tipo_documento" required>
+            <option value="">-- Selecciona un tipo --</option>
+            <option value="bitácora">Bitácora</option>
+            <option value="carta de término">Carta de Término</option>
+            <option value="kárdex">Kárdex</option>
+            <option value="certificado">Certificado</option>
+          </select>
         </div>
+
         <div class="form-group">
           <label for="ruta">Ruta *</label>
           <input type="text" id="ruta" name="ruta" required />
@@ -114,10 +121,16 @@
         <div class="form-group">
           <label for="update_practica_id">Práctica ID</label>
           <input type="number" id="update_practica_id" name="practica_id" />
-        </div>
+        </div>         
         <div class="form-group">
-          <label for="update_tipo_documento">Tipo de Documento</label>
-          <input type="text" id="update_tipo_documento" name="tipo_documento" />
+          <label for="update_tipo_documento">Tipo de Documento *</label>
+          <select id="update_tipo_documento" name="update_tipo_documento" required>
+            <option value="">-- Selecciona un tipo --</option>
+            <option value="bitácora">Bitácora</option>
+            <option value="carta de término">Carta de Término</option>
+            <option value="kárdex">Kárdex</option>
+            <option value="certificado">Certificado</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="update_ruta">Ruta</label>

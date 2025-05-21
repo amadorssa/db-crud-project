@@ -37,7 +37,7 @@ CREATE_TABLES_SQL = """
         documento_id SERIAL PRIMARY KEY,
         practica_id INTEGER NOT NULL REFERENCES internships(practica_id) ON 
         DELETE CASCADE,
-        tipo_documento INTEGER NOT NULL,
+        tipo_documento VARCHAR(20) NOT NULL,
         ruta VARCHAR(255) NOT NULL,
         es_verificado BOOLEAN NOT NULL DEFAULT FALSE,
         es_activo BOOLEAN NOT NULL DEFAULT TRUE,
