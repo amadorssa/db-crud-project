@@ -49,17 +49,18 @@
                 </div>
                 <div class="form-group">
                     <label for="periodo">Periodo *</label>
-                    <input type="number" id="periodo" name="periodo" required>
+                    <select id="periodo" name="periodo" required>
+                        <option value="false">1</option>
+                        <option value="true">2</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="estatus">Estatus *</label>
-                    <input type="text" id="estatus" name="estatus" required>
-                </div>
-                <div class="form-group">
-                    <label for="es_activo">¿Está Activo?</label>
-                    <select id="es_activo" name="es_activo">
-                        <option value="true">Sí</option>
-                        <option value="false">No</option>
+                    <select id="estatus" name="estatus" required>
+                        <option value="false">En curso</option>
+                        <option value="true">Suspendida</option>
+                        <option value="true">Finalizada</option>
+                        <option value="true">Cancelada</option>
                     </select>
                 </div>
                 <button type="submit">Crear Practica</button>
@@ -125,17 +126,18 @@
                 </div>
                 <div class="form-group">
                     <label for="update_periodo">Periodo</label>
-                    <input type="number" id="update_periodo" name="periodo">
+                    <select id="update_periodo" name="periodo">
+                        <option value="false">1</option>
+                        <option value="true">2</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="update_estatus">Estatus</label>
-                    <input type="text" id="update_estatus" name="estatus">
-                </div>
-                <div class="form-group">
-                    <label for="update_es_activo">¿Está Activo?</label>
-                    <select id="update_es_activo" name="es_activo">
-                        <option value="true">Sí</option>
-                        <option value="false">No</option>
+                    <select id="update_estatus" name="estatus">
+                        <option value="false">En curso</option>
+                        <option value="true">Suspendida</option>
+                        <option value="true">Finalizada</option>
+                        <option value="true">Cancelada</option>
                     </select>
                 </div>
                 <button type="submit">Actualizar Practica</button>

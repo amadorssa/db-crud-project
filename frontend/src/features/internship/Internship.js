@@ -33,7 +33,6 @@ document.getElementById('createInternshipForm')
       ano: form.ano.value,
       periodo: form.periodo.value,
       estatus: form.estatus.value,
-      es_activo: form.es_activo.value === 'true',
     };
     try {
       await api.post(API_ENDPOINTS.INTERNSHIPS.CREATE, payload);
@@ -108,7 +107,6 @@ document.getElementById('loadInternshipForUpdate')
       document.getElementById('update_ano').value = data.ano;
       document.getElementById('update_periodo').value = data.periodo;
       document.getElementById('update_estatus').value         = data.estatus;
-      document.getElementById('update_es_activo').value     = data.es_activo;
       console.log('Datos cargados para actualizar', data);
       showSuccess('Datos cargados para actualizar');
     } catch (error) {
@@ -129,10 +127,10 @@ document.getElementById('updateInternshipForm')
         const v = document.getElementById(`update_${f}`).value;
         if (v) payload[f] = v === '' ? undefined : v;
       });
-    payload.es_activo = document.getElementById('update_es_activo').value === 'true';
     try {
       await api.put(API_ENDPOINTS.INTERNSHIPS.UPDATE(id), payload);
       showSuccess('Practica actualizada');
+      form.reset();
       loadInternships();
     } catch (error) {
       showError(error.response?.detail || 'Error actualizando');
@@ -150,6 +148,7 @@ document.getElementById('deleteInternshipBtn')
     try {
       await api.delete(API_ENDPOINTS.INTERNSHIPS.DELETE(id));
       showSuccess('Practica eliminada');
+      form.reset();
       loadInternships();
     } catch (error) {
       showError(error.response?.detail || 'Error eliminando');
