@@ -49,6 +49,14 @@ export const API_ENDPOINTS = {
     UPDATE:  (id) => `/internships/${id}/`,
     DELETE:  (id) => `/internships/${id}/`,
   },
+
+  REPORTS: {
+    CREATE:  '/reportes/',
+    GET_ALL: '/reportes/',
+    GET:     (id) => `/reportes/${id}/`,
+    UPDATE:  (id) => `/reportes/${id}/`,
+    DELETE:  (id) => `/reportes/${id}/`,
+  },
 };
 
 export const api = {

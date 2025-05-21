@@ -1,0 +1,175 @@
+<!-- frontend/report/report.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script type="module" src="/static/api.js"></script>
+    <script type="module" src="/static/routes.js"></script>
+    <script type="module" src="/static/src/features/report/Report.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+          <a href="#" class="logo">Bases de datos</a>
+          <ul>
+            <li><a href="/static/src/features/user/UserPage.html">Usuarios</a></li>
+            <li><a href="#">Unidades</a></li>
+            <li><a href="#">Internados</a></li>
+            <li><a href="#">Reportes</a></li>
+            <li><a href="#">Documentos</a></li>
+          </ul>
+        </div>
+      </nav>
+
+    <div class="container">
+        <h1>Reportes</h1>
+        
+        <!-- Mensaje de éxito y error -->
+        <div id="successMessage" class="success-message"></div>
+        <div id="errorMessage" class="error-message"></div>
+        
+        <!-- Sección para crear Reportes -->
+        <div class="section">
+            <h2>Crear Reportes</h2>
+            <form id="createReportForm">
+                <div class="form-group">
+                    <label for="alumno_id">Alumno ID *</label>
+                    <input type="text" id="alumno_id" name="alumno_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="practica_id">Practica ID *</label>
+                    <input type="text" id="practica_id" name="practica_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha *</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="unidad">Unidad *</label>
+                    <input type="text" id="unidad" name="unidad" requiered>
+                </div>
+                <div class="form-group">
+                    <label for="tipo_reporte">Tipo de Reporte *</label>
+                    <input type="text" id="tipo_reporte" name="tipo_reporte" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripcion *</label>
+                    <input type="text" id="descripcion" name="descripcion" required>
+                </div>
+                <div class="form-group">
+                    <label for="evidencia">Evidencia (url)</label>
+                    <input type="url" id="evidencia" name="evidencia">
+                </div>
+                <div class="form-group">
+                    <label for="anonimo">¿Anonimo? *</label>
+                    <select id="anonimo" name="anonimo">
+                        <option value="false">No</option>
+                        <option value="true">Sí</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="es_abierto">¿Está Abierto?</label>
+                    <select id="es_abierto" name="es_abierto">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <button type="submit">Crear Reporte</button>
+            </form>
+        </div>
+        
+        <!-- Sección para listar Reportes -->
+        <div class="section">
+            <h2>Lista de Reportes</h2>
+            <button id="refreshList">Actualizar Lista</button>
+            <div id="reportsList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Practica ID</th>
+                            <th>Fecha</th>
+                            <th>Unidad</th>
+                            <th>Tipo de Reporte</th>
+                            <th>Anonimo</th>
+                            <th>¿Está abierto?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <!-- Aquí se mostrarán los reportes -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Sección para ver detalles de un reporte -->
+        <div class="section">
+            <h2>Detalles de Reporte</h2>
+            <div class="form-group">
+                <label for="reportId">ID de Reporte</label>
+                <input type="number" id="reportId" name="reportId" min="1">
+                <button id="getReportDetails">Ver Detalles</button>
+            </div>
+            <div id="reportDetails" style="margin-top: 20px;">
+                <!-- Aquí se mostrarán los detalles del reporte -->
+            </div>
+        </div>
+        
+        <!-- Sección para actualizar usuario -->
+        <div class="section">
+            <h2>Actualizar Reporte</h2>
+            <div class="form-group">
+                <label for="updateReportId">ID de Reporte a Actualizar *</label>
+                <input type="number" id="updateReportId" name="updateReportId" min="1" required>
+                <button id="loadReportForUpdate">Cargar Datos</button>
+            </div>
+            <form id="updateReportForm" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="update_fecha">Fecha</label>
+                    <input type="date" id="update_fecha" name="fecha">
+                </div>
+                <div class="form-group">
+                    <label for="update_tipo_reporte">Tipo de Reporte</label>
+                    <input type="text" id="update_tipo_reporte" name="tipo_reporte">
+                </div>
+                <div class="form-group">
+                    <label for="update_descripcion">Descripcion</label>
+                    <input type="text" id="update_descripcion" name="descripcion">
+                </div>
+                <div class="form-group">
+                    <label for="update_evidencia">Evidencia (url)</label>
+                    <input type="url" id="update_evidencia" name="evidencia">
+                </div>
+                <div class="form-group">
+                    <label for="update_anonimo">¿Anonimo?</label>
+                    <select id="update_anonimo" name="anonimo">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="update_es_abierto">¿Está Abierto?</label>
+                    <select id="update_es_abierto" name="es_abierto">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <button type="submit">Actualizar Reporte</button>
+            </form>
+        </div>
+        
+        <!-- Sección para eliminar Reporte -->
+        <div class="section">
+            <h2>Eliminar Reporte</h2>
+            <div class="form-group">
+                <label for="deleteReportId">ID del Reporte a Eliminar</label>
+                <input type="number" id="deleteReportId" name="deleteReportId" min="1" required>
+            </div>
+            <button id="deleteReportBtn" class="delete-btn">Eliminar Reporte</button>
+        </div>
+    </div>
+</body>
+</html>
